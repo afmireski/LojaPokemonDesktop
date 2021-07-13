@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 public class Capitalize {
     
     public String capitalizeTextUpper(String str) {
+        //DEIXA A PRIMEIRA LETRA DE CADA PALAVRA MAIÚSCULA
         String result = "";        
         for (int i = 1; i < str.length(); i++) {
             String letra = str.substring(i-1, i);            
