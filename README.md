@@ -1,2 +1,2 @@
 # LojaPokemonDesktop
- Projeto Integrador do Técnico da UTFPR
+ Projeto Integrador do Técnico da UTFPR - Desktop
