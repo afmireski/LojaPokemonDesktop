@@ -1,4 +1,8 @@
 # LojaPokemonDesktop
  Projeto Integrador do Técnico da UTFPR - Desktop  
- _Objetivo: Criar um sistema de gerenciamento para uma loja de pokémon_  
- _Linguagem: Java_
+ 
+ * Objetivo: _Criar um sistema de gerenciamento para uma loja de pokémon_  
+ * Linguagem: _Java_
+ * Banco de Dados: _MySQL_
+
+
