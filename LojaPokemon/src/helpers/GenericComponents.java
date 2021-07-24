@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package helpers;
 
 import java.awt.Component;
@@ -28,36 +27,36 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author afmireski
  */
 public class GenericComponents {
-    
+
     ///SPINNERS
     public JSpinner createIntSpinner(int initialValue, int minValue, int maxValue, int passo) {
         SpinnerNumberModel model = new SpinnerNumberModel(
-                initialValue, 
-                minValue, 
-                maxValue, 
+                initialValue,
+                minValue,
+                maxValue,
                 passo);
         return new JSpinner(model);
     }
-    
+
     public JSpinner createDoubleSpinner(double initialValue, double minValue, double maxValue, double passo) {
         SpinnerNumberModel model = new SpinnerNumberModel(
-                initialValue, 
-                minValue, 
-                maxValue, 
+                initialValue,
+                minValue,
+                maxValue,
                 passo);
         return new JSpinner(model);
     }
-    
+
     public JSpinner createListSpinner(String list[], int width) {
         SpinnerListModel model = new SpinnerListModel(list);
         JSpinner jSpinner = new JSpinner(model);
-        
+
         JComponent editor = jSpinner.getEditor();
         JFormattedTextField tf = ((JSpinner.DefaultEditor) editor).getTextField();
         tf.setColumns(width); //DEFINE A LARGURA DO SPINER
         return jSpinner;
     }
-    
+
     ///PANELS
     public JPanel createChildPanel(Component child, FlowLayout layout) {
         JPanel jPanel = new JPanel(layout);
@@ -68,25 +67,24 @@ public class GenericComponents {
     ///COMBO BOX
     public JComboBox createComboBox(List<String> list) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        JComboBox comboBox = new JComboBox(model);   
+        JComboBox comboBox = new JComboBox(model);
         if (list != null) {
             for (String str : list) {
                 model.addElement(str);
             }
-        }        
-        return  comboBox;
+        }
+        return comboBox;
     }
-    
-    
+
     ///FILE CHOOSER
-    public JFileChooser createFileChooser(FileNameExtensionFilter filter, int selectedMode){
+    public JFileChooser createFileChooser(FileNameExtensionFilter filter, int selectedMode) {
         JFileChooser jFileChooser = new JFileChooser();
         jFileChooser.setFileFilter(filter);
         jFileChooser.setFileSelectionMode(selectedMode);
-        
+
         return jFileChooser;
     }
-    
+
     ///BUTTONS
     public JButton buttonWithIcon(String label, String iconPath) {
         JButton jButton;
@@ -94,16 +92,15 @@ public class GenericComponents {
             ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource(iconPath));
             jButton = new JButton(label, icon);
         } else {
-            jButton = new JButton(label);                        
+            jButton = new JButton(label);
         }
         return jButton;
     }
-    
+
     public JButton iconButton(String iconPath) {
         ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource(iconPath));
         JButton jButton = new JButton(icon);
         return jButton;
     }
-    
-    
+
 }

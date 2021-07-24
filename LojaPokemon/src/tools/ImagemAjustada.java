@@ -28,7 +28,7 @@ public class ImagemAjustada {
             // System.out.println("erro ao carregar imagem " + e.getLocalizedMessage());
             String dirApp = new DiretorioDaAplicacao().getDiretorioDaAplicacao();
             origem = dirApp + "/src/fotos/silhueta.png";
-            System.out.println("silhueta "+origem);      
+            System.out.println("silhueta " + origem);
             ImageIcon icone = new ImageIcon(getClass().getResource(origem));
             imagemAux = icone.getImage();
             icone.setImage(imagemAux.getScaledInstance(tamX, tamY, Image.SCALE_FAST));

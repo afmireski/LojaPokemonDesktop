@@ -76,5 +76,5 @@ public class EnderecoPK implements Serializable {
     public String toString() {
         return "models.EnderecoPK[ cep=" + cep + ", nCasa=" + nCasa + " ]";
     }
-    
+
 }

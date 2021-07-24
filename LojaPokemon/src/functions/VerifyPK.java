@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package functions;
 
 /**
@@ -12,7 +11,6 @@ package functions;
  */
 public class VerifyPK {
 
-    
     public boolean pkIsAInt(Object obj) {
         try {
             if (obj.toString().contains(",") || obj.toString().contains(".")) {
@@ -26,7 +24,7 @@ public class VerifyPK {
             return false;
         }
     }
-    
+
     public boolean pkString(Object obj) {
         try {
             if (obj.toString().trim().isEmpty()) {
@@ -39,5 +37,5 @@ public class VerifyPK {
             return false;
         }
     }
-    
+
 }

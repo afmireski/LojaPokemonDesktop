@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package functions;
 
 import enums.FormatoArquivo;
@@ -15,42 +14,42 @@ import enums.GeneroLivro;
  * @author afmireski
  */
 public class ConvertToEnum {
-    
+
     public FormatoLivro stringToFormatoLivro(String formato) {
         //Converte uma String com um padrão especifico em FormatoLivro
         switch (formato) {
             case "E_BOOK":
-               return FormatoLivro.E_BOOK;
+                return FormatoLivro.E_BOOK;
             case "DIGITAL":
                 return FormatoLivro.DIGITAL;
             case "FISICO":
             default:
-                return FormatoLivro.FISICO;                        
+                return FormatoLivro.FISICO;
         }
     }
-    
+
     public GeneroLivro stringToGeneroLivro(String genero) {
         //Converte uma String com um padrão especifico em GeneroLivro
         switch (genero) {
             case "FICCAO_CIENTIFICA":
-               return GeneroLivro.FICCAO_CIENTIFICA;
+                return GeneroLivro.FICCAO_CIENTIFICA;
             case "AVENTURA":
-               return GeneroLivro.AVENTURA;
+                return GeneroLivro.AVENTURA;
             case "DRAMA":
-               return GeneroLivro.DRAMA;
+                return GeneroLivro.DRAMA;
             case "SUSPENSE":
-               return GeneroLivro.SUSPENSE;
+                return GeneroLivro.SUSPENSE;
             case "TERROR":
-               return GeneroLivro.TERROR;
+                return GeneroLivro.TERROR;
             case "FANTASIA":
-               return GeneroLivro.SUSPENSE;
+                return GeneroLivro.SUSPENSE;
             case "ROMANCE":
             default:
                 return GeneroLivro.ROMANCE;
-                        
+
         }
     }
-    
+
     public FormatoArquivo stringToFormatoArquivo(String formato) {
         switch (formato) {
             case "TXT":
@@ -69,7 +68,7 @@ public class ConvertToEnum {
                 return FormatoArquivo.PDF;
             case "OUTROS":
             default:
-                return FormatoArquivo.OUTROS;     
+                return FormatoArquivo.OUTROS;
         }
     }
 

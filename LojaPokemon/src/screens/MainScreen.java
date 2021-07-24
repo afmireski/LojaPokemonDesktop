@@ -30,7 +30,8 @@ import javax.swing.event.MenuListener;
  *
  * @author AFMireski
  */
-public class MainScreen extends JDialog{
+public class MainScreen extends JDialog {
+
     //INSTANCIA DOS CONTAINERS
     Container container;
 
@@ -41,41 +42,38 @@ public class MainScreen extends JDialog{
     JPanel panEast = new JPanel();
     JPanel panWest = new JPanel();
     JPanel panBody = new JPanel();
-    
-    
-    
+
 //INSTANCIA DOS MENUS
     JMenu menu = new JMenu("Cadastros");
     JMenuBar menuBar = new JMenuBar();
     String[] menuItens = {"Endereço", "Tipo Pokémon", "Novidades"};
-    
+
     private void createMenu() {
         List<String> itens = Arrays.asList(menuItens);
-        
+
         itens.forEach((it) -> {
             menu.add(createMenuItem(it, (ae) -> {
                 CardLayout cl = (CardLayout) panBody.getLayout();
                 cl.show(panBody, it);
             }));
         });
-        
+
         menuBar.add(menu);
         this.setJMenuBar(menuBar);
     }
-    
+
     private JMenuItem createMenuItem(String name, ActionListener al) {
-        JMenuItem mi  = new JMenuItem(name);
+        JMenuItem mi = new JMenuItem(name);
         mi.addActionListener(al);
-        
+
         return mi;
     }
-    
 
     public MainScreen() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setTitle("Loja Pokémon - Painel Administrativo");
-        
+
         //CONTAINER CONFIGURATIONS
         container = getContentPane();
         container.setLayout(new BorderLayout());
@@ -84,22 +82,16 @@ public class MainScreen extends JDialog{
         container.add(panEast, BorderLayout.EAST);
         container.add(panWest, BorderLayout.WEST);
         container.add(panBody, BorderLayout.CENTER);
-        
-        
+
         //PAN BODY CONFIGURATIONS
         panBody.setBorder(BorderFactory.createLineBorder(Color.black, 5));
-        
+
         //MENU CONFIGURATIONS
         createMenu();
-        
-        
-        
-        
+
         pack();
         setModal(true);
         setVisible(true);
     }
-    
-    
-    
+
 }

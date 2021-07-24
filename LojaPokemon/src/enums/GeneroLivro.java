@@ -15,6 +15,6 @@ public enum GeneroLivro {
     AVENTURA,
     DRAMA,
     SUSPENSE,
-    TERROR, 
+    TERROR,
     FANTASIA
 }

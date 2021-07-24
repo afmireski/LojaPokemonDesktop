@@ -98,5 +98,5 @@ public class Novidades implements Serializable {
     public String toString() {
         return "models.Novidades[ id=" + id + " ]";
     }
-    
+
 }

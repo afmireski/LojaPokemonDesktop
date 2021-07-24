@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package functions;
 
 import java.awt.Desktop;
@@ -14,7 +13,6 @@ import java.awt.Desktop;
  */
 public class VerifySupportDesktop {
 
-    
     public boolean verifySupportDesktopAPI() {
         //VERIFICA SE A API DESKTOP É SUPORTADA
         if (Desktop.isDesktopSupported()) {
@@ -23,7 +21,7 @@ public class VerifySupportDesktop {
             return false;
         }
     }
-    
+
     public boolean verifySupportDesktopOpen(Desktop desktop) {
         //VERIFICA SE A API DESKTOP É SUPORTADA
         if (desktop.isSupported(Desktop.Action.OPEN)) {

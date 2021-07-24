@@ -97,5 +97,5 @@ public class Tipopokemon implements Serializable {
     public String toString() {
         return "models.Tipopokemon[ id=" + id + " ]";
     }
-    
+
 }

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package functions;
 
 import enums.DialogMessageType;
@@ -18,7 +17,7 @@ import java.io.IOException;
  * @author afmireski
  */
 public class DesktopActions {
-    
+
     public void openFile(Desktop desk, File file) {
         try {
             desk.open(file);
@@ -26,8 +25,8 @@ public class DesktopActions {
             ErrorTools errorTools = new ErrorTools();
             errorTools.showIOExceptionStackTrace(ioe);
             BuildMessageDialog buildMessageDialog = new BuildMessageDialog(
-                    DialogMessageType.ERROR, 
-                    ioe.getMessage(), 
+                    DialogMessageType.ERROR,
+                    ioe.getMessage(),
                     "DESKTOP ERROR",
                     null);
         }

@@ -7,12 +7,8 @@ import javax.swing.JOptionPane;
  *
  * @author afmireski
  */
-
-
-
 public class BuildConfirmDialog {
-       
-    
+
     private DialogConfirmType dialogType;
     private String dialogMessage;
     private String dialogTitle;
@@ -25,7 +21,7 @@ public class BuildConfirmDialog {
         this.dialogType = dialogType;
         this.dialogMessage = dialogMessage;
         this.dialogTitle = dialogTitle;
-        
+
         switch (this.dialogType) {
             case YES_NO:
                 response = JOptionPane.showConfirmDialog(null,
@@ -63,11 +59,5 @@ public class BuildConfirmDialog {
     public int getResponse() {
         return response;
     }
-    
-    
-    
-    
-    
-    
 
 }

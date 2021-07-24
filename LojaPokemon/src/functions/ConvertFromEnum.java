@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package functions;
 
 import enums.FormatoArquivo;
@@ -15,42 +14,43 @@ import enums.GeneroLivro;
  * @author afmireski
  */
 public class ConvertFromEnum {
+
     public String stringFromFormatoLivro(FormatoLivro formato) {
         //Converte um FormatoLivro com um padrão especifico em String
         switch (formato) {
             case E_BOOK:
-               return "E_BOOK";
+                return "E_BOOK";
             case DIGITAL:
                 return "DIGITAL";
             case FISICO:
             default:
                 return "FISICO";
-                        
+
         }
     }
-    
+
     public String stringFromGeneroLivro(GeneroLivro genero) {
         //Converte um GeneroLivro para String;
         switch (genero) {
             case FICCAO_CIENTIFICA:
-               return "FICCAO_CIENTIFICA";
+                return "FICCAO_CIENTIFICA";
             case AVENTURA:
-               return "AVENTURA";
+                return "AVENTURA";
             case DRAMA:
-               return "DRAMA";
+                return "DRAMA";
             case SUSPENSE:
-               return "SUSPENSE";
+                return "SUSPENSE";
             case TERROR:
-               return "TERROR";
+                return "TERROR";
             case FANTASIA:
-               return "FANTASIA";
+                return "FANTASIA";
             case ROMANCE:
             default:
                 return "ROMANCE";
-                        
+
         }
     }
-    
+
     public String stringFromFormatoArquivo(FormatoArquivo formatoArquivo) {
         //Converte um FormatoArquivo para String;
         switch (formatoArquivo) {
@@ -70,8 +70,8 @@ public class ConvertFromEnum {
                 return "PDF";
             case OUTROS:
             default:
-                return "OUTROS";            
+                return "OUTROS";
         }
-        
+
     }
 }

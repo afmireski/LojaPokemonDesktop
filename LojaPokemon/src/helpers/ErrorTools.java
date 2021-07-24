@@ -14,7 +14,6 @@ import java.io.StringWriter;
  * @author afmireski
  */
 public class ErrorTools {
-    
 
     public void showExceptionStackTrace(Exception exception) {
         StringWriter sw = new StringWriter();
@@ -22,24 +21,20 @@ public class ErrorTools {
         String stackTrace = sw.toString();
         System.out.println("Stack Trace: " + stackTrace);
     }
-    
+
     public void showExceptionMessage(Exception exception) {
         System.out.println("Exception: " + exception.getMessage());
     }
-    
+
     public void showIOExceptionStackTrace(IOException exception) {
         StringWriter sw = new StringWriter();
         exception.printStackTrace(new PrintWriter(sw));
         String stackTrace = sw.toString();
         System.out.println("Stack Trace: " + stackTrace);
     }
-    
+
     public void showIOExceptionMessage(IOException exception) {
         System.out.println("Exception: " + exception.getMessage());
     }
-    
-    
-    
-    
 
 }
