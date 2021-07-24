@@ -5,6 +5,8 @@
  */
 package main;
 
+import screens.MainScreen;
+
 /**
  *
  * @author AFMireski
@@ -15,6 +17,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        MainScreen mainScreen = new MainScreen();
         
     }
     
