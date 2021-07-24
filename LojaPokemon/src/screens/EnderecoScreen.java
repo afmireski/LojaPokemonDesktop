@@ -1,5 +1,6 @@
 package screens;
 
+import daos.DAOEndereco;
 import functions.ConvertToEnum;
 import functions.ConvertFromEnum;
 import java.util.ArrayList;
@@ -37,8 +38,8 @@ import tools.CaixaDeFerramentas;
 import tools.Tools;
 import enums.DialogMessageType;
 import enums.DialogConfirmType;
-import controllers.EnderecoController;
 import models.Endereco;
+import models.EnderecoPK;
 
 /**
  *
@@ -71,8 +72,13 @@ public class EnderecoScreen extends JDialog {
     JPanel panEast = new JPanel();
     JPanel panWest = new JPanel();
     JPanel panBody = new JPanel();
+    
+    //NORTH PANELS
+    JPanel panPK = new JPanel(new GridLayout(1, 2));
+    JPanel panPKcep = new JPanel();
+    JPanel panPKn = new JPanel();
 
-//BODY PANELS
+    //BODY PANELS
     JPanel panL1C1 = new JPanel(); //Painel referente a posição da grade: Linha 1 - Coluna 1
     JPanel panL1C2 = new JPanel(); //Painel referente a posição da grade: Linha 1 - Coluna 2
     JPanel panL2C1 = new JPanel(); //Painel referente a posição da grade: Linha 2 - Coluna 1
@@ -99,7 +105,7 @@ public class EnderecoScreen extends JDialog {
 //INSTANCIA DOS CONTROLLERS
     String actionController;
     boolean listController = false;
-    EnderecoController enderecoController = new EnderecoController();
+    DAOEndereco daoEndereco = new DAOEndereco();
 
 //INSTANCIA DOS LABELS
     JLabel lblCep = new JLabel("CEP");
@@ -119,6 +125,8 @@ public class EnderecoScreen extends JDialog {
 
 //INSTANCIA DAS ENTIDADES
     Endereco endereco = new Endereco();
+    EnderecoPK pk = new EnderecoPK();
+    
 //INSTANCIA DAS TABLE SCREENS
     EnderecoTableScreen enderecoTableScreen;
 
@@ -127,22 +135,13 @@ public class EnderecoScreen extends JDialog {
         setLocationRelativeTo(null);
         setTitle("CRUD - ENDERECO");
 
-        //LOAD DATA
-        final String path = "Endereco.csv";
-        enderecoController.loadData(path);
 
         //BUTTONS INITIAL CONFIGURATIONS
-        btnRetrieve.setEnabled(true);
-        btnCancel.setVisible(false);
-        btnList.setVisible(true);
-        btnCreate.setEnabled(false);
-        btnAction.setVisible(false);
-        btnUpdate.setEnabled(false);
-        btnDelete.setEnabled(false);
+        buttonsInitialConfiguration();
 
         //TEXTFIELD INITIAL CONFIGURATIONS
         txtCep.setEnabled(true);
-        txtNCasa.setEnabled(false);
+        txtNCasa.setEnabled(true);
         txtNome.setEnabled(false);
         txtCidade.setEnabled(false);
         txtUf.setEnabled(false);
@@ -159,9 +158,17 @@ public class EnderecoScreen extends JDialog {
 
         //PAN NORTH CONFIGURATIONS
         panNorth.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panNorth.add(lblCep);
-        panNorth.add(txtCep);
-
+        
+        
+        panPKcep.add(lblCep);
+        panPKcep.add(txtCep);        
+        panPKn.add(lblNCasa);
+        panPKn.add(txtNCasa);
+        
+        panPK.add(panPKcep);
+        panPK.add(panPKn);
+        
+        panNorth.add(panPK);
         panNorth.add(btnRetrieve);
         panNorth.add(btnCreate);
         panNorth.add(btnUpdate);
@@ -189,10 +196,6 @@ public class EnderecoScreen extends JDialog {
         panBody.add(panL6C1);
         panBody.add(panL6C2);
 
-        //Prenchimento Linha 1
-        panL1C1.add(lblNCasa);
-        panL1C2.add(txtNCasa);
-
         //Prenchimento Linha 2
         panL2C1.add(lblNome);
         panL2C2.add(txtNome);
@@ -216,8 +219,10 @@ public class EnderecoScreen extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if (!txtCep.getText().trim().isEmpty()) {
-                        endereco = enderecoController.retrieve(txtCep.getText());
+                    if (!txtCep.getText().trim().isEmpty() && !txtNCasa.getText().trim().isEmpty()) {
+                        pk.setCep(txtCep.getText().trim());
+                        pk.setNCasa(Integer.valueOf(txtNCasa.getText()));
+                        endereco = daoEndereco.get(pk);
                         if (endereco != null) {
                             btnCreate.setEnabled(false);
                             btnCreate.setVisible(true);
@@ -231,8 +236,8 @@ public class EnderecoScreen extends JDialog {
                             txtUf.setEnabled(false);
                             txtUfDescricao.setEnabled(false);
 
-                            txtCep.setText(String.valueOf(endereco.getCep()));
-                            txtNCasa.setText(String.valueOf(endereco.getNCasa()));
+                            txtCep.setText(String.valueOf(endereco.getEnderecoPK().getCep()));
+                            txtNCasa.setText(String.valueOf(endereco.getEnderecoPK().getNCasa()));
                             txtNome.setText(String.valueOf(endereco.getNome()));
                             txtCidade.setText(String.valueOf(endereco.getCidade()));
                             txtUf.setText(String.valueOf(endereco.getUf()));
@@ -319,29 +324,28 @@ public class EnderecoScreen extends JDialog {
                     if (actionController.equalsIgnoreCase("CREATE")) {
                         endereco = new Endereco();
                     }
-                    Endereco enderecoAntigo = endereco;
-                    if (txtNCasa.getText().trim().isEmpty() || txtNome.getText().trim().isEmpty() || txtCidade.getText().trim().isEmpty() || txtUf.getText().trim().isEmpty() || txtUfDescricao.getText().trim().isEmpty()) {
+                    if (txtNome.getText().trim().isEmpty() || 
+                            txtCidade.getText().trim().isEmpty() || txtUf.getText().trim().isEmpty() || 
+                            txtUfDescricao.getText().trim().isEmpty()) {
                         throw new Exception("Verifique se os seus campos estão preenchidos!");
                     } else {
-                        endereco.setCep(txtCep.getText());
-                        endereco.setNCasa(Integer.valueOf(txtNCasa.getText()));
+                        pk.setCep(txtCep.getText().trim());
+                        pk.setNCasa(Integer.valueOf(txtNCasa.getText()));
+                        endereco.setEnderecoPK(pk);
                         endereco.setNome(txtNome.getText());
                         endereco.setCidade(txtCidade.getText());
                         endereco.setUf(Integer.valueOf(txtUf.getText()));
-                        endereco.setUfDescricao(Integer.valueOf(txtUfDescricao.getText()));
+                        endereco.setUfDescricao(txtUfDescricao.getText());
                     }
                     if (actionController.equalsIgnoreCase("CREATE")) {
                         System.out.println(endereco.toString());
-                        enderecoController.create(endereco);
-                        System.out.println("ENDERECO ADICIONADO!");
+                        daoEndereco.insert(endereco);
+                        System.out.println("ENDERECO ADICIONADO NO BANCO!");
                     } else if (actionController.equalsIgnoreCase("UPDATE")) {
-                        System.out.println("ENDERECO => " + endereco.toString());
-                        System.out.println("ENDERECO ANTIGO => " + enderecoAntigo.toString());
-                        enderecoController.update(enderecoAntigo, endereco);
-                        System.out.println("LISTA ATUALIZADA!");
+                        daoEndereco.update(endereco);
+                        System.out.println("BANCO ATUALIZADO!");
                     } else {
-
-                        throw new Exception("Falha ao executar a ação na lista");
+                        throw new Exception("Falha ao executar a ação no banco");
 
                     }
 
@@ -391,11 +395,12 @@ public class EnderecoScreen extends JDialog {
                 int response = confirmDialog.getResponse();
 
                 if (response == JOptionPane.YES_OPTION) {
+                    daoEndereco.delete(endereco);
+                    
                     btnRetrieve.setEnabled(false);
                     btnUpdate.setEnabled(false);
                     btnDelete.setEnabled(false);
                     btnCreate.setEnabled(false);
-                    btnOpen.setEnabled(false);
 
                     actionController = "DELETE";
                     btnAction.setVisible(false);
@@ -415,7 +420,6 @@ public class EnderecoScreen extends JDialog {
                     txtCidade.setText("");
                     txtUf.setText("");
                     txtUfDescricao.setText("");
-                    enderecoController.delete(endereco);
 
                     messageDialog = new BuildMessageDialog(
                             DialogMessageType.SUCESS,
@@ -437,7 +441,7 @@ public class EnderecoScreen extends JDialog {
                     enderecoTableScreen.dispose();
                     listController = false;
                 }
-                List<Endereco> enderecos = enderecoController.listar();
+                List<Endereco> enderecos = daoEndereco.list();
                 enderecoTableScreen = new EnderecoTableScreen(enderecos);
                 listController = true;
             }
@@ -448,14 +452,7 @@ public class EnderecoScreen extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 //RETORNA A TELA AO ESTADO INICIAL
                 //BUTTONS INITIAL CONFIGURATIONS
-                btnRetrieve.setEnabled(true);
-                btnCancel.setVisible(false);
-                btnList.setVisible(true);
-                btnCreate.setEnabled(false);
-                btnAction.setVisible(false);
-                btnUpdate.setEnabled(false);
-                btnDelete.setEnabled(false);
-                btnOpen.setEnabled(false);
+                buttonsInitialConfiguration();
 
                 //TEXTFIELD INITIAL CONFIGURATIONS
                 txtCep.setEnabled(true);
@@ -477,7 +474,7 @@ public class EnderecoScreen extends JDialog {
             }
         });
 
-//Close Window Action
+        //Close Window Action
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -486,7 +483,6 @@ public class EnderecoScreen extends JDialog {
                     enderecoTableScreen.dispose();
                     listController = false;
                 }
-                enderecoController.saveData(path);
                 dispose();
             }
         });
@@ -494,5 +490,16 @@ public class EnderecoScreen extends JDialog {
         pack();
         setModal(true);
         setVisible(true);
+    }
+    
+    
+    private void buttonsInitialConfiguration() {
+        btnRetrieve.setEnabled(true);
+        btnCancel.setVisible(false);
+        btnList.setVisible(true);
+        btnCreate.setEnabled(false);
+        btnAction.setVisible(false);
+        btnUpdate.setEnabled(false);
+        btnDelete.setEnabled(false);
     }
 }

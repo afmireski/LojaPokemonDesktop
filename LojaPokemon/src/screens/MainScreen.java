@@ -46,16 +46,23 @@ public class MainScreen extends JDialog {
 //INSTANCIA DOS MENUS
     JMenu menu = new JMenu("Cadastros");
     JMenuBar menuBar = new JMenuBar();
-    String[] menuItens = {"Endereço", "Tipo Pokémon", "Novidades"};
+    JMenuItem[] menuItens = {
+        createMenuItem("Endereço", (ae) -> {
+            EnderecoScreen enderecoScreen = new EnderecoScreen();  
+        }),            
+        createMenuItem("Tipo Pokémon", (ae) -> {
+            ///TODO: INSTACIAR TIPO POKÉMON SCREEN
+        }),        
+        createMenuItem("Novidades", (ae) -> {
+            ///TODO: INSTACIAR NOVIDADES SCREEN
+        })
+    };
 
     private void createMenu() {
-        List<String> itens = Arrays.asList(menuItens);
+        List<JMenuItem> itens = Arrays.asList(menuItens);
 
         itens.forEach((it) -> {
-            menu.add(createMenuItem(it, (ae) -> {
-                CardLayout cl = (CardLayout) panBody.getLayout();
-                cl.show(panBody, it);
-            }));
+            menu.add(it);
         });
 
         menuBar.add(menu);
@@ -83,8 +90,6 @@ public class MainScreen extends JDialog {
         container.add(panWest, BorderLayout.WEST);
         container.add(panBody, BorderLayout.CENTER);
 
-        //PAN BODY CONFIGURATIONS
-        panBody.setBorder(BorderFactory.createLineBorder(Color.black, 5));
 
         //MENU CONFIGURATIONS
         createMenu();
