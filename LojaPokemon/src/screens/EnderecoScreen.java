@@ -3,10 +3,6 @@ package screens;
 import daos.DAOEndereco;
 import functions.ConvertToEnum;
 import functions.ConvertFromEnum;
-import java.util.ArrayList;
-import java.util.List;
-import tools.CaixaDeFerramentas;
-import tools.ManipulaArquivo;
 import functions.VerifyPK;
 import helpers.BuildConfirmDialog;
 import helpers.BuildMessageDialog;
@@ -15,29 +11,28 @@ import helpers.GenericComponents;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import tools.CaixaDeFerramentas;
 import tools.Tools;
 import enums.DialogMessageType;
 import enums.DialogConfirmType;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import javax.swing.JComboBox;
 import models.Endereco;
 import models.EnderecoPK;
 
@@ -93,14 +88,13 @@ public class EnderecoScreen extends JDialog {
     JPanel panL6C2 = new JPanel(); //Painel referente a posição da grade: Linha 6 - Coluna 2
 
 //INSTANCIA DOS BUTTONS
-    JButton btnCreate = new JButton("Create");
-    JButton btnRetrieve = new JButton("Retrieve");
-    JButton btnUpdate = new JButton("Update");
-    JButton btnDelete = new JButton("Delete");
+    JButton btnCreate = components.buttonWithIcon("Create", "/icons/create.png");
+    JButton btnRetrieve = components.buttonWithIcon("Retrieve", "/icons/retrieve.png");
+    JButton btnUpdate = components.buttonWithIcon("Update", "/icons/update.png");
+    JButton btnDelete = components.buttonWithIcon("Delete", "/icons/delete.png");
     JButton btnAction = new JButton("Add to List");
-    JButton btnRemove = new JButton("Remove");
-    JButton btnCancel = new JButton("Cancel");
-    JButton btnList = new JButton("List");
+    JButton btnCancel = components.buttonWithIcon("Cancel", "/icons/cancel.png");
+    JButton btnList = components.buttonWithIcon("List", "/icons/list.png");
 
 //INSTANCIA DOS CONTROLLERS
     String actionController;
@@ -109,7 +103,7 @@ public class EnderecoScreen extends JDialog {
 
 //INSTANCIA DOS LABELS
     JLabel lblCep = new JLabel("CEP");
-    JLabel lblNCasa = new JLabel("NCASA");
+    JLabel lblNCasa = new JLabel("Nº CASA");
     JLabel lblNome = new JLabel("NOME");
     JLabel lblCidade = new JLabel("CIDADE");
     JLabel lblUf = new JLabel("UF");
@@ -120,8 +114,7 @@ public class EnderecoScreen extends JDialog {
     JTextField txtNCasa = new JTextField(5);
     JTextField txtNome = new JTextField(15);
     JTextField txtCidade = new JTextField(15);
-    JTextField txtUf = new JTextField(5);
-    JTextField txtUfDescricao = new JTextField(10);
+    JComboBox txtUf;
 
 //INSTANCIA DAS ENTIDADES
     Endereco endereco = new Endereco();
@@ -129,23 +122,28 @@ public class EnderecoScreen extends JDialog {
     
 //INSTANCIA DAS TABLE SCREENS
     EnderecoTableScreen enderecoTableScreen;
+    
+//INSTANCIA DOS MAP
+    String[] desc = {"ACRE", "ALAGOAS", "AMAPÁ", "AMAZONAS", "BAHIA", "CEARÁ",
+        "ESPÍRITO SANTO", "GOÍAS", "MARANHÃO", "MATO GROSSO", "MATO GROSSO DO SUL",
+        "MINAS GERAIS", "PARÁ", "PARAÍBA", "PARANÁ", "PERNAMBUCO", "PIAUÍ", "RIO DE JANEIRO",
+        "RIO GRANDE DO NORTE", "RIO GRANDE DO SUL", "RONDÔNIA", "RORAIMA", "SANTA CATARINA",
+        "SÃO PAULO", "DISTRITO FEDERAL"};
 
+    
     public EnderecoScreen() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - ENDERECO");
+        setTitle("CRUD - ENDEREÇO");
 
-
+        txtUf = components.createComboBox(Arrays.asList(desc));
+        
         //BUTTONS INITIAL CONFIGURATIONS
         buttonsInitialConfiguration();
 
         //TEXTFIELD INITIAL CONFIGURATIONS
-        txtCep.setEnabled(true);
-        txtNCasa.setEnabled(true);
-        txtNome.setEnabled(false);
-        txtCidade.setEnabled(false);
-        txtUf.setEnabled(false);
-        txtUfDescricao.setEnabled(false);
+        textFieldInitialConfiguration();
+        
 
         //CONTAINER CONFIGURATIONS
         container = getContentPane();
@@ -180,19 +178,15 @@ public class EnderecoScreen extends JDialog {
 
         //PAN BODY CONFIGURATIONS
         panBody.setBorder(BorderFactory.createLineBorder(Color.black, 5));
-        panBody.setLayout(new GridLayout(6, 2));
+        panBody.setLayout(new GridLayout(4, 2));
 
         //Prenchimento por Linha
-        panBody.add(panL1C1);
-        panBody.add(panL1C2);
         panBody.add(panL2C1);
         panBody.add(panL2C2);
         panBody.add(panL3C1);
         panBody.add(panL3C2);
         panBody.add(panL4C1);
         panBody.add(panL4C2);
-        panBody.add(panL5C1);
-        panBody.add(panL5C2);
         panBody.add(panL6C1);
         panBody.add(panL6C2);
 
@@ -207,10 +201,6 @@ public class EnderecoScreen extends JDialog {
         //Prenchimento Linha 4
         panL4C1.add(lblUf);
         panL4C2.add(txtUf);
-
-        //Prenchimento Linha 5
-        panL5C1.add(lblUfDescricao);
-        panL5C2.add(txtUfDescricao);
 
         //Prenchimento Linha 6
         panL6C2.add(btnAction);
@@ -230,35 +220,30 @@ public class EnderecoScreen extends JDialog {
                             btnUpdate.setVisible(true);
                             btnDelete.setEnabled(true);
 
-                            txtNCasa.setEnabled(false);
-                            txtNome.setEnabled(false);
-                            txtCidade.setEnabled(false);
+                            txtNome.setEditable(false);
+                            txtCidade.setEditable(false);
                             txtUf.setEnabled(false);
-                            txtUfDescricao.setEnabled(false);
 
                             txtCep.setText(String.valueOf(endereco.getEnderecoPK().getCep()));
                             txtNCasa.setText(String.valueOf(endereco.getEnderecoPK().getNCasa()));
                             txtNome.setText(String.valueOf(endereco.getNome()));
                             txtCidade.setText(String.valueOf(endereco.getCidade()));
-                            txtUf.setText(String.valueOf(endereco.getUf()));
-                            txtUfDescricao.setText(String.valueOf(endereco.getUfDescricao()));
+                            txtUf.setSelectedIndex(endereco.getUf() - 1);
                         } else {
                             btnCreate.setEnabled(true);
                             btnCreate.setVisible(true);
                             btnUpdate.setEnabled(false);
                             btnDelete.setEnabled(false);
-
-                            txtNCasa.setEnabled(true);
-                            txtNome.setEnabled(true);
-                            txtCidade.setEnabled(true);
+                            
+                            txtNome.setEditable(true);
+                            txtCidade.setEditable(true);
                             txtUf.setEnabled(true);
-                            txtUfDescricao.setEnabled(true);
-                            txtNCasa.setText("");
                             txtNome.setText("");
                             txtCidade.setText("");
-                            txtUf.setText("");
-                            txtUfDescricao.setText("");
+                            txtUf.setSelectedIndex(0);
                         }
+                    } else {
+                        throw new Exception("CEP e Nº não podem estar vazios.");
                     }
                 } catch (Exception excep) {
                     errorTools.showExceptionStackTrace(excep);
@@ -282,8 +267,9 @@ public class EnderecoScreen extends JDialog {
                 btnCancel.setVisible(true);
                 btnAction.setVisible(true);
 
-                txtCep.setEnabled(false);
-                txtNCasa.requestFocus();
+                txtCep.setEditable(false);
+                txtNCasa.setEditable(false);
+                txtNome.requestFocus();
 
                 actionController = "CREATE";
 
@@ -302,13 +288,12 @@ public class EnderecoScreen extends JDialog {
                 btnCancel.setVisible(true);
                 btnAction.setVisible(true);
 
-                txtCep.setEnabled(false);
-                txtNCasa.setEnabled(true);
-                txtNome.setEnabled(true);
-                txtCidade.setEnabled(true);
+                txtCep.setEditable(false);
+                txtNCasa.setEditable(false);
+                txtNome.setEditable(true);
+                txtCidade.setEditable(true);
                 txtUf.setEnabled(true);
-                txtUfDescricao.setEnabled(true);
-                txtNCasa.requestFocus();
+                txtNome.requestFocus();
 
                 actionController = "UPDATE";
 
@@ -325,8 +310,7 @@ public class EnderecoScreen extends JDialog {
                         endereco = new Endereco();
                     }
                     if (txtNome.getText().trim().isEmpty() || 
-                            txtCidade.getText().trim().isEmpty() || txtUf.getText().trim().isEmpty() || 
-                            txtUfDescricao.getText().trim().isEmpty()) {
+                            txtCidade.getText().trim().isEmpty()) {
                         throw new Exception("Verifique se os seus campos estão preenchidos!");
                     } else {
                         pk.setCep(txtCep.getText().trim());
@@ -334,8 +318,8 @@ public class EnderecoScreen extends JDialog {
                         endereco.setEnderecoPK(pk);
                         endereco.setNome(txtNome.getText());
                         endereco.setCidade(txtCidade.getText());
-                        endereco.setUf(Integer.valueOf(txtUf.getText()));
-                        endereco.setUfDescricao(txtUfDescricao.getText());
+                        endereco.setUf(txtUf.getSelectedIndex()+1);
+                        endereco.setUfDescricao(desc[txtUf.getSelectedIndex()]);
                     }
                     if (actionController.equalsIgnoreCase("CREATE")) {
                         System.out.println(endereco.toString());
@@ -357,20 +341,11 @@ public class EnderecoScreen extends JDialog {
                     btnCreate.setEnabled(false);
                     btnCancel.setVisible(false);
 
-                    txtCep.setEnabled(true);
-                    txtCep.setText("");
+                    textFieldInitialConfiguration();
+                    
                     txtCep.requestFocus();
-
-                    txtNCasa.setEnabled(false);
-                    txtNome.setEnabled(false);
-                    txtCidade.setEnabled(false);
-                    txtUf.setEnabled(false);
-                    txtUfDescricao.setEnabled(false);
-                    txtNCasa.setText("");
-                    txtNome.setText("");
-                    txtCidade.setText("");
-                    txtUf.setText("");
-                    txtUfDescricao.setText("");
+                    
+                    clearAllFields();
 
                 } catch (Exception excep) {
                     errorTools.showExceptionStackTrace(excep);
@@ -406,20 +381,11 @@ public class EnderecoScreen extends JDialog {
                     btnAction.setVisible(false);
                     btnRetrieve.setEnabled(true);
 
-                    txtCep.setEnabled(true);
-                    txtCep.setText("");
+                    textFieldInitialConfiguration();
+                    
                     txtCep.requestFocus();
 
-                    txtNCasa.setEnabled(false);
-                    txtNome.setEnabled(false);
-                    txtCidade.setEnabled(false);
-                    txtUf.setEnabled(false);
-                    txtUfDescricao.setEnabled(false);
-                    txtNCasa.setText("");
-                    txtNome.setText("");
-                    txtCidade.setText("");
-                    txtUf.setText("");
-                    txtUfDescricao.setText("");
+                    clearAllFields();
 
                     messageDialog = new BuildMessageDialog(
                             DialogMessageType.SUCESS,
@@ -455,21 +421,12 @@ public class EnderecoScreen extends JDialog {
                 buttonsInitialConfiguration();
 
                 //TEXTFIELD INITIAL CONFIGURATIONS
-                txtCep.setEnabled(true);
-                txtNCasa.setEnabled(false);
-                txtNome.setEnabled(false);
-                txtCidade.setEnabled(false);
-                txtUf.setEnabled(false);
-                txtUfDescricao.setEnabled(false);
-
-                txtCep.setText("");
+                textFieldInitialConfiguration();
+                
+                clearAllFields();
                 txtCep.requestFocus();
 
-                txtNCasa.setText("");
-                txtNome.setText("");
-                txtCidade.setText("");
-                txtUf.setText("");
-                txtUfDescricao.setText("");
+                
 
             }
         });
@@ -501,5 +458,21 @@ public class EnderecoScreen extends JDialog {
         btnAction.setVisible(false);
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
+    }
+    
+    private void textFieldInitialConfiguration() {
+        txtCep.setEditable(true);
+        txtNCasa.setEditable(true);
+        txtNome.setEditable(false);
+        txtCidade.setEditable(false);
+        txtUf.setEnabled(false);
+    }
+    
+    private void clearAllFields() {
+                txtCep.setText("");
+                txtNCasa.setText("");
+                txtNome.setText("");
+                txtCidade.setText("");
+                txtUf.setSelectedIndex(0);
     }
 }

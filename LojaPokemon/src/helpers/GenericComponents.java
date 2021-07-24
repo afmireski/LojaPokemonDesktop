@@ -6,9 +6,10 @@
 package helpers;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -71,6 +72,17 @@ public class GenericComponents {
         if (list != null) {
             for (String str : list) {
                 model.addElement(str);
+            }
+        }
+        return comboBox;
+    }
+    
+    public JComboBox createComboBoxFromMaps(List<HashMap> list, Object key1, Object key2) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        JComboBox comboBox = new JComboBox(model);
+        if (list != null) {
+            for (HashMap<Object, Object> map : list) {
+                model.addElement(map.get(key1) + " - " + map.get(key2));
             }
         }
         return comboBox;

@@ -118,6 +118,10 @@ public class Endereco implements Serializable {
         }
         return true;
     }
+    
+    public String toCSV() {
+        return enderecoPK.getCep() + ";" + enderecoPK.getNCasa() + ";" + nome + ";" + cidade + ";" + uf + ";" + ufDescricao;
+    }
 
     @Override
     public String toString() {

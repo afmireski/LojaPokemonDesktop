@@ -6,31 +6,24 @@
 package screens;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Container;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 
 /**
  *
  * @author AFMireski
  */
-public class MainScreen extends JDialog {
+public class MainScreen extends JFrame {
 
     //INSTANCIA DOS CONTAINERS
     Container container;
@@ -90,12 +83,19 @@ public class MainScreen extends JDialog {
         container.add(panWest, BorderLayout.WEST);
         container.add(panBody, BorderLayout.CENTER);
 
+        panNorth.add(new JLabel("LOJA POKÉMON"));
 
         //MENU CONFIGURATIONS
         createMenu();
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {                
+                dispose();
+            }
+        });
+        
         pack();
-        setModal(true);
         setVisible(true);
     }
 

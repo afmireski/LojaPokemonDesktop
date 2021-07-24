@@ -66,7 +66,7 @@ public class EnderecoTableScreen extends JDialog {
         String aux[];
 
         for (int i = 0; i < this.enderecos.size(); i++) {
-            aux = this.enderecos.get(i).toString().split(";");
+            aux = this.enderecos.get(i).toCSV().split(";");
             for (int j = 0; j < colunas.length; j++) {
                 dados[i][j] = aux[j];
             }
