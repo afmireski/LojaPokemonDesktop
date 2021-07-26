@@ -171,8 +171,8 @@ public class TipopokemonScreen extends JDialog {
                             btnUpdate.setVisible(true);
                             btnDelete.setEnabled(true);
 
-                            txtSigla.setEnabled(false);
-                            txtDescricao.setEnabled(false);
+                            txtSigla.setEditable(false);
+                            txtDescricao.setEditable(false);
 
                             txtId.setText(String.valueOf(tipopokemon.getId()));
                             txtSigla.setText(String.valueOf(tipopokemon.getSigla()));
@@ -183,8 +183,8 @@ public class TipopokemonScreen extends JDialog {
                             btnUpdate.setEnabled(false);
                             btnDelete.setEnabled(false);
 
-                            txtSigla.setEnabled(true);
-                            txtDescricao.setEnabled(true);
+                            txtSigla.setEditable(true);
+                            txtDescricao.setEditable(true);
                             txtSigla.setText("");
                             txtDescricao.setText("");
                         }
@@ -211,7 +211,7 @@ public class TipopokemonScreen extends JDialog {
                 btnCancel.setVisible(true);
                 btnAction.setVisible(true);
 
-                txtId.setEnabled(false);
+                txtId.setEditable(false);
                 txtSigla.requestFocus();
 
                 actionController = "CREATE";
@@ -231,9 +231,9 @@ public class TipopokemonScreen extends JDialog {
                 btnCancel.setVisible(true);
                 btnAction.setVisible(true);
 
-                txtId.setEnabled(false);
-                txtSigla.setEnabled(true);
-                txtDescricao.setEnabled(true);
+                txtId.setEditable(false);
+                txtSigla.setEditable(true);
+                txtDescricao.setEditable(true);
                 txtSigla.requestFocus();
 
                 actionController = "UPDATE";
@@ -303,6 +303,7 @@ public class TipopokemonScreen extends JDialog {
                 int response = confirmDialog.getResponse();
 
                 if (response == JOptionPane.YES_OPTION) {
+                    daoTipopokemon.delete(tipopokemon);
                     btnRetrieve.setEnabled(false);
                     btnUpdate.setEnabled(false);
                     btnDelete.setEnabled(false);
@@ -390,7 +391,7 @@ public class TipopokemonScreen extends JDialog {
     private void textFieldInitialConfiguration() {
         txtId.setEditable(true);
         txtSigla.setEditable(false);
-        txtDescricao.setEnabled(false);
+        txtDescricao.setEditable(false);
     }
 
     private void clearAllFields() {

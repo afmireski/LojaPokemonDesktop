@@ -179,8 +179,8 @@ public class NovidadesScreen extends JDialog {
                             btnUpdate.setVisible(true);
                             btnDelete.setEnabled(true);
 
-                            txtTitulo.setEnabled(false);
-                            txtDescricao.setEnabled(false);
+                            txtTitulo.setEditable(false);
+                           txtDescricao.setEditable(false);
 
                             txtId.setText(String.valueOf(novidades.getId()));
                             txtTitulo.setText(String.valueOf(novidades.getTitulo()));
@@ -191,8 +191,8 @@ public class NovidadesScreen extends JDialog {
                             btnUpdate.setEnabled(false);
                             btnDelete.setEnabled(false);
 
-                            txtTitulo.setEnabled(true);
-                            txtDescricao.setEnabled(true);
+                            txtTitulo.setEditable(true);
+                            txtDescricao.setEditable(true);
                             txtTitulo.setText("");
                             txtDescricao.setText("");
                         }
@@ -219,7 +219,7 @@ public class NovidadesScreen extends JDialog {
                 btnCancel.setVisible(true);
                 btnAction.setVisible(true);
 
-                txtId.setEnabled(false);
+                txtId.setEditable(false);
                 txtTitulo.requestFocus();
 
                 actionController = "CREATE";
@@ -239,9 +239,9 @@ public class NovidadesScreen extends JDialog {
                 btnCancel.setVisible(true);
                 btnAction.setVisible(true);
 
-                txtId.setEnabled(false);
-                txtTitulo.setEnabled(true);
-                txtDescricao.setEnabled(true);
+                txtId.setEditable(false);
+                txtTitulo.setEditable(true);
+               txtDescricao.setEditable(true);
                 txtTitulo.requestFocus();
 
                 actionController = "UPDATE";
@@ -313,6 +313,7 @@ public class NovidadesScreen extends JDialog {
                 int response = confirmDialog.getResponse();
 
                 if (response == JOptionPane.YES_OPTION) {
+                    daoNovidades.delete(novidades);
                     btnRetrieve.setEnabled(false);
                     btnUpdate.setEnabled(false);
                     btnDelete.setEnabled(false);
@@ -400,7 +401,7 @@ public class NovidadesScreen extends JDialog {
     private void textFieldInitialConfiguration() {
         txtId.setEditable(true);
         txtTitulo.setEditable(false);
-        txtDescricao.setEnabled(false);
+       txtDescricao.setEditable(false);
     }
 
     private void clearAllFields() {
