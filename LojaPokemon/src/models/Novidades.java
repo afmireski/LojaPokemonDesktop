@@ -96,7 +96,7 @@ public class Novidades implements Serializable {
 
     @Override
     public String toString() {
-        return "models.Novidades[ id=" + id + " ]";
+        return id + ";" + titulo + ";" + descricao;
     }
-    
+
 }

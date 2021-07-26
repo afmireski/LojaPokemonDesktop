@@ -5,6 +5,8 @@
  */
 package main;
 
+import screens.TipopokemonScreen;
+
 /**
  *
  * @author AFMireski
@@ -15,7 +17,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        TipopokemonScreen tipopokemonScreen = new TipopokemonScreen();
     }
     
     
