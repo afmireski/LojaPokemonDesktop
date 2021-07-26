@@ -80,10 +80,10 @@ public class MainScreen extends JFrame {
             EnderecoScreen enderecoScreen = new EnderecoScreen();  
         }),            
         createMenuItem("Tipo Pokémon", (ae) -> {
-            ///TODO: INSTACIAR TIPO POKÉMON SCREEN
+            TipopokemonScreen tipopokemonScreen = new TipopokemonScreen();
         }),        
         createMenuItem("Novidades", (ae) -> {
-            ///TODO: INSTACIAR NOVIDADES SCREEN
+            NovidadesScreen novidadesScreen = new NovidadesScreen();
         })
     };
 
