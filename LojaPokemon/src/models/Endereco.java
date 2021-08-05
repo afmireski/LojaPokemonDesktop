@@ -6,12 +6,15 @@
 package models;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -23,6 +26,9 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Endereco.findAll", query = "SELECT e FROM Endereco e")})
 public class Endereco implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "endereco")
+    private List<Pessoa> pessoaList;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -126,6 +132,14 @@ public class Endereco implements Serializable {
     @Override
     public String toString() {
         return "models.Endereco[ enderecoPK=" + enderecoPK + " ]";
+    }
+
+    public List<Pessoa> getPessoaList() {
+        return pessoaList;
+    }
+
+    public void setPessoaList(List<Pessoa> pessoaList) {
+        this.pessoaList = pessoaList;
     }
 
 }
