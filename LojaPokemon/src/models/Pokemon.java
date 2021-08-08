@@ -149,6 +149,14 @@ public class Pokemon implements Serializable {
         }
         return true;
     }
+    
+    public String toFK() {
+        return id + " - " + nome;
+    }
+    
+    public String toCSV() {
+        return id + ";" + nome + ";" + dataCadastro + ";" + estoque + ";" + imagem + ";" + tipoPokemonID.getSigla();
+    }
 
     @Override
     public String toString() {

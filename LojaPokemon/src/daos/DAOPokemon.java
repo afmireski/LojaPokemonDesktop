@@ -5,6 +5,7 @@
  */
 package daos;
 
+import java.util.ArrayList;
 import java.util.List;
 import models.Pokemon;
 
@@ -18,39 +19,58 @@ public class DAOPokemon extends DAOGeneric<Pokemon>{
         super(Pokemon.class);
     }
     
-    List<Pokemon> searchByNome(String nome) {
+   public Integer autoincrement() {
+       Integer i = (Integer) em.createQuery("SELECT MAX(e.id) from Pokemon e").getSingleResult();
+       
+       if (i != null) {
+           return i + 1;
+       } else {
+           return 1;
+       }
+   }
+    
+    public List<Pokemon> searchByNome(String nome) {
         return em.createQuery("SELECT e FROM Pokemon e where e.nome like :nome").
                 setParameter("nome", "%"+nome+"%").getResultList();
     }
     
-    List<Pokemon> searchByID(int id) {
+    public List<Pokemon> searchByID(int id) {
         return em.createQuery("SELECT e FROM Pokemon e where e.id = :id").
                 setParameter("id", id).getResultList();
     }
     
-    List<Pokemon> searchFast(String search) {
+    public List<Pokemon> searchFast(String search) {
         return em.createQuery("SELECT e FROM Pokemon e where e.id = :search or e.nome like %:search%").
                 setParameter("search", search).getResultList();
     }
     
-    List<Pokemon> orderByID(boolean isDesc) {
+    public List<Pokemon> orderByID(boolean isDesc) {
         return em.createQuery("SELECT e from Pokemon e ORDER BY e.id " + (isDesc ? "DESC" : "ASC")).getResultList();
     }
     
-    List<Pokemon> orderByNome(boolean isDesc) {
+    public List<Pokemon> orderByNome(boolean isDesc) {
         return em.createQuery("SELECT e from Pokemon e ORDER BY e.nome " + (isDesc ? "DESC" : "ASC")).getResultList();
     }
     
-    List<Pokemon> orderByDataCadastro(boolean isDesc) {
+    public List<Pokemon> orderByDataCadastro(boolean isDesc) {
         return em.createQuery("SELECT e from Pokemon e ORDER BY e.dataCadastro " + (isDesc ? "DESC" : "ASC")).getResultList();
     }
     
-    List<Pokemon> orderByEstoque(boolean isDesc) {
+    public List<Pokemon> orderByEstoque(boolean isDesc) {
         return em.createQuery("SELECT e from Pokemon e ORDER BY e.estoque " + (isDesc ? "DESC" : "ASC")).getResultList();
     }
     
-    List<Pokemon> orderByTipoPokemon() {
+    public List<Pokemon> orderByTipoPokemon() {
         return em.createQuery("SELECT e from Pokemon e ORDER BY e.tipoPokemonID DESC").getResultList();
+    }
+    
+    public List<String> getFKList() {
+        List<String> fks = new ArrayList<>();
+        
+        this.orderByID(false).forEach((p) -> {
+            fks.add(p.toFK());
+        });
+        return fks;
     }
     
     public static void main(String[] args) {

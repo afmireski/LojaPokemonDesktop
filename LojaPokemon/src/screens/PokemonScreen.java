@@ -1,12 +1,10 @@
 package screens;
 
 import daos.DAOPokemon;
+import daos.DAOTipopokemon;
+import enums.CrudAction;
 import functions.ConvertToEnum;
 import functions.ConvertFromEnum;
-import java.util.ArrayList;
-import java.util.List;
-import tools.CaixaDeFerramentas;
-import tools.ManipulaArquivo;
 import functions.VerifyPK;
 import helpers.BuildConfirmDialog;
 import helpers.BuildMessageDialog;
@@ -15,23 +13,19 @@ import helpers.GenericComponents;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import java.io.File;
@@ -44,7 +38,10 @@ import tools.DiretorioDaAplicacao;
 import tools.ImagemAjustada;
 import enums.DialogMessageType;
 import enums.DialogConfirmType;
+import java.util.Date;
+import javax.swing.JComboBox;
 import models.Pokemon;
+import models.Tipopokemon;
 
 /**
  *
@@ -108,10 +105,11 @@ public class PokemonScreen extends JDialog {
     JButton btnRemoveImage = new JButton("Remove Image");
 
 //INSTANCIA DOS CONTROLLERS
-    String actionController;
+    CrudAction actionController;
     boolean listController = false;
     boolean imageController = false;
     DAOPokemon daoPokemon = new DAOPokemon();
+    DAOTipopokemon daoTipopokemon = new DAOTipopokemon();
 
 //INSTANCIA DOS LABELS
     JLabel lblId = new JLabel("ID");
@@ -124,14 +122,19 @@ public class PokemonScreen extends JDialog {
     JTextField txtId = new JTextField(5);
     JTextField txtNome = new JTextField(15);
     JTextField txtEstoque = new JTextField(6);
-    JTextField txtTipoPokemonID = new JTextField(10);
+    
+//INSTANCIA DAS COMBO BOX
+    JComboBox fkBox;
 
 //INSTANCIA DAS ENTIDADES
     Pokemon pokemon = new Pokemon();
+    
 //INSTANCIA DAS TABLE SCREENS
     PokemonTableScreen pokemonTableScreen;
+    
 //PATHS
     String currentPath = dda.getDiretorioDaAplicacao();
+    
 //IMAGE CONFIGURATIONS
     int defaultHeight = 256;
     int defaultWidth = 256;
@@ -146,6 +149,9 @@ public class PokemonScreen extends JDialog {
         //IMAGE INITIAl CONFIGURATIONS
         setImage(defaultImagePath);
         currentImage = defaultImagePath;
+        
+        //FK CONFIGURATIONS
+        fkBox = components.createComboBox(daoTipopokemon.getFKList());
 
         //BUTTONS INITIAL CONFIGURATIONS
         buttonsInitialConfiguration();
@@ -211,7 +217,7 @@ public class PokemonScreen extends JDialog {
 
         //Prenchimento Linha 3
         panL3C1.add(lblTipoPokemonID);
-        panL3C2.add(txtTipoPokemonID);
+        panL3C2.add(fkBox);
 
         //Prenchimento Linha 5
         panL5C2.add(btnAction);
@@ -231,15 +237,15 @@ public class PokemonScreen extends JDialog {
 
                             txtNome.setEditable(false);
                             txtEstoque.setEditable(false);
-                            txtTipoPokemonID.setEditable(false);
+                            fkBox.setEnabled(false);
 
                             txtId.setText(String.valueOf(pokemon.getId()));
                             txtNome.setText(String.valueOf(pokemon.getNome()));
                             txtEstoque.setText(String.valueOf(pokemon.getEstoque()));
-                            txtTipoPokemonID.setText(String.valueOf(pokemon.getTipoPokemonID()));
+                            fkBox.setSelectedItem(pokemon.getTipoPokemonID().toFK());
                             String image;
                             if (!pokemon.getImagem().trim().isEmpty()) {
-                                image = getImage();
+                                image = currentPath + pokemon.getImagem();
                                 ImageIcon icon = imagemAjustada.getImagemAjustada(
                                         image,
                                         defaultHeight,
@@ -262,10 +268,10 @@ public class PokemonScreen extends JDialog {
 
                             txtNome.setEditable(true);
                             txtEstoque.setEditable(true);
-                            txtTipoPokemonID.setEditable(true);
+                            fkBox.setEnabled(true);
                             txtNome.setText("");
                             txtEstoque.setText("");
-                            txtTipoPokemonID.setText("");
+                            fkBox.setSelectedIndex(0);
                             ImageIcon icon = imagemAjustada.getImagemAjustada(
                                     defaultImagePath,
                                     defaultHeight,
@@ -301,7 +307,7 @@ public class PokemonScreen extends JDialog {
                 txtId.setEditable(false);
                 txtNome.requestFocus();
 
-                actionController = "CREATE";
+                actionController = CrudAction.CREATE;
                 imageController = false;
                 btnAction.setText("Adicionar à Lista");
             }
@@ -323,10 +329,10 @@ public class PokemonScreen extends JDialog {
                 txtId.setEditable(false);
                 txtNome.setEditable(true);
                 txtEstoque.setEditable(true);
-                txtTipoPokemonID.setEditable(true);
+                fkBox.setEnabled(true);
                 txtNome.requestFocus();
 
-                actionController = "UPDATE";
+                actionController = CrudAction.UPDATE;
 
                 btnAction.setText("Atualizar na Lista");
             }
@@ -337,11 +343,10 @@ public class PokemonScreen extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if (actionController.equalsIgnoreCase("CREATE")) {
+                    if (actionController.equals(CrudAction.CREATE)) {
                         pokemon = new Pokemon();
                     }
-                    if (txtNome.getText().trim().isEmpty() || txtEstoque.getText().trim().isEmpty() || 
-                            txtTipoPokemonID.getText().trim().isEmpty()) {
+                    if (txtNome.getText().trim().isEmpty() || txtEstoque.getText().trim().isEmpty()) {
                         throw new Exception("Verifique se os seus campos estão preenchidos!");
                     } else if (currentImage.trim().isEmpty() || currentImage.contains("/src/images/default.png")) {
                         throw new Exception("Todo Pokémon deve ter uma imagem!");
@@ -349,16 +354,25 @@ public class PokemonScreen extends JDialog {
                         pokemon.setId(Integer.valueOf(txtId.getText()));
                         pokemon.setNome(txtNome.getText());
                         pokemon.setEstoque(Integer.valueOf(txtEstoque.getText()));
-//                        pokemon.setTipoPokemonID(Integer.valueOf(txtTipoPokemonID.getText())); TODO: Salvar TipoPokemon
-                        pokemon.setImagem(getImage());
+                        pokemon.setTipoPokemonID(selectTipoPokemon());
+                        pokemon.setDataCadastro(new Date());
+                        if (actionController.equals(CrudAction.CREATE)) {
+                            pokemon.setImagem("/src/images/" + daoPokemon.autoincrement() + ".png");                            
+                        } else {                            
+                            pokemon.setImagem("/src/images/" + txtId.getText() + ".png");
+                        }                        
                         if (imageController) {
-                            copiaFoto(txtId.getText());
+                            if (actionController.equals(CrudAction.UPDATE)) {
+                                copiaFoto(txtId.getText());
+                            } else {
+                                copiaFoto(daoPokemon.autoincrement().toString());
+                            }
                         }
                     }
-                    if (actionController.equalsIgnoreCase("CREATE")) {
+                    if (actionController.equals(CrudAction.CREATE)) {
                         daoPokemon.insert(pokemon);
                         System.out.println("POKEMON ADICIONADO!");
-                    } else if (actionController.equalsIgnoreCase("UPDATE")) {
+                    } else if (actionController.equals(CrudAction.UPDATE)) {
                         daoPokemon.update(pokemon);
                         System.out.println("LISTA ATUALIZADA!");
                     } else {
@@ -383,8 +397,6 @@ public class PokemonScreen extends JDialog {
 
                     clearAllFields();
 
-                    currentImage = defaultImagePath;
-                    setImage(defaultImagePath);
                 } catch (Exception excep) {
                     errorTools.showExceptionStackTrace(excep);
                     messageDialog = new BuildMessageDialog(
@@ -407,7 +419,19 @@ public class PokemonScreen extends JDialog {
 
                 int response = confirmDialog.getResponse();
 
-                if (response == JOptionPane.YES_OPTION) {
+                if (response == JOptionPane.YES_OPTION) {                    
+
+                    File image = new File(currentImage.trim());
+
+                    if (image.exists()) {
+                        if (!currentImage.equals(defaultImagePath)) {
+                            image.delete();
+                        }
+                        setImage(defaultImagePath);
+                    }
+                    
+                    daoPokemon.delete(pokemon);
+                    
                     btnRetrieve.setEnabled(false);
                     btnUpdate.setEnabled(false);
                     btnDelete.setEnabled(false);
@@ -415,7 +439,7 @@ public class PokemonScreen extends JDialog {
                     btnSelectImage.setVisible(false);
                     btnRemoveImage.setVisible(false);
 
-                    actionController = "DELETE";
+                    actionController = CrudAction.DELETE;
                     btnAction.setVisible(false);
                     btnRetrieve.setEnabled(true);
 
@@ -426,22 +450,12 @@ public class PokemonScreen extends JDialog {
                     txtId.requestFocus();
 
                     clearAllFields();
-                    File image = new File(currentImage.trim());
-
-                    if (image.exists()) {
-                        if (!currentImage.equals(defaultImagePath)) {
-                            image.delete();
-                        }
-                        setImage(defaultImagePath);
-
-                        daoPokemon.delete(pokemon);
-                    }
+                    
                     messageDialog = new BuildMessageDialog(
                             DialogMessageType.SUCESS,
                             "POKEMON EXCLUÍDO COM SUCESSO",
                             "DELETE",
                             container);
-                    System.out.println("POKEMON EXCLUÍDO");
                 }
             }
         });
@@ -560,14 +574,14 @@ public class PokemonScreen extends JDialog {
         txtId.setEditable(true);
         txtNome.setEditable(false);
         txtEstoque.setEditable(false);
-        txtTipoPokemonID.setEditable(false);
+        fkBox.setEnabled(false);
     }
 
     private void clearAllFields() {
         txtId.setText("");
         txtNome.setText("");
         txtEstoque.setText("");
-        txtTipoPokemonID.setText("");        
+        fkBox.setSelectedIndex(0);        
 
         currentImage = defaultImagePath;
         setImage(defaultImagePath);
@@ -578,17 +592,23 @@ public class PokemonScreen extends JDialog {
                 imagePath, defaultHeight, defaultWidth));
     }
 
-    private String getImage() {
-        return currentPath + "/src/images/" + txtId.getText() + ".png";
+    private String getImage(String pk) {
+        return currentPath + "/src/images/" + pk + ".png";
     }
 
     private void copiaFoto(String pk) {
-        String destino = getImage();
+        String destino = getImage(pk);
 
         System.out.println(currentImage);
         System.out.println(destino);
 
         copiarArquivos.copiar(currentImage, destino);
+    }
+    
+    private Tipopokemon selectTipoPokemon() {
+        String fk = fkBox.getSelectedItem().toString();
+        Integer key = Integer.valueOf(fk.split(" - ")[0]);
+        return daoTipopokemon.searchByID(key).get(0);
     }
 
 }

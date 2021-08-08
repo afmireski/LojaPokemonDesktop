@@ -98,6 +98,10 @@ public class Tipopokemon implements Serializable {
         }
         return true;
     }
+    
+    public String toFK() {
+        return id + " - " + sigla;
+    }
 
     @Override
     public String toString() {

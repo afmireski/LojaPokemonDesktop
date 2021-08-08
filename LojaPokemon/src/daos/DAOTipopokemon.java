@@ -5,6 +5,7 @@
  */
 package daos;
 
+import java.util.ArrayList;
 import java.util.List;
 import models.Tipopokemon;
 
@@ -24,6 +25,15 @@ public class DAOTipopokemon extends DAOGeneric<Tipopokemon> {
     
     public List<Tipopokemon> listOrderByID() {
         return em.createQuery("SELECT e FROM Tipopokemon e ORDER BY e.id").getResultList();
+    }
+    
+    public List<String> getFKList() {
+        List<String> fks = new ArrayList<>();
+        
+        this.listOrderByID().forEach((p) -> {
+            fks.add(p.toFK());
+        });
+        return fks;
     }
 
     public static void main(String[] args) {

@@ -62,13 +62,13 @@ this.pokemons = pokemons;
 
 panBody.setLayout(new GridLayout(1, 1));
 //TABELA
-String colunas[] = new String[]{"ID", "NOME", "ESTOQUE", "TIPOPOKEMONID", "IMAGE"};
+String colunas[] = new String[]{"ID", "NOME", "DATA CADASTRO", "ESTOQUE", "IMAGEM", "TIPO POKÉMON"};
 Object dados[][] = new Object[this.pokemons.size()][colunas.length];
 
 String aux[];
 
         for (int i = 0; i < this.pokemons.size(); i++) {
-            aux = this.pokemons.get(i).toString().split(";");
+            aux = this.pokemons.get(i).toCSV().split(";");
             for (int j = 0; j < colunas.length; j++) {
                 dados[i][j] = aux[j];
             }
