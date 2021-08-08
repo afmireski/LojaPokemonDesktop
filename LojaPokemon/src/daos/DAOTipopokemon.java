@@ -23,6 +23,14 @@ public class DAOTipopokemon extends DAOGeneric<Tipopokemon> {
         return em.createQuery("SELECT e FROM Tipopokemon e WHERE e.id = :id").setParameter("id", id).getResultList();
     }
     
+    public List<Tipopokemon> searchFast(String search) {
+        return em.createQuery("SELECT e FROM Tipopokemon e where "
+                + "e.sigla like :search or "
+                + "e.descricao like :search").
+                setParameter("search", "%"+search+"%").
+                getResultList();
+    }
+    
     public List<Tipopokemon> listOrderByID() {
         return em.createQuery("SELECT e FROM Tipopokemon e ORDER BY e.id").getResultList();
     }
@@ -35,12 +43,25 @@ public class DAOTipopokemon extends DAOGeneric<Tipopokemon> {
         });
         return fks;
     }
+    
+    public List<String> getEspecificFKList(List<Tipopokemon> tp) {
+        List<String> fks = new ArrayList<>();
+        
+        tp.forEach((p) -> {
+            fks.add(p.toFK());
+        });
+        return fks;
+    }
 
     public static void main(String[] args) {
         ///VERIFICA OS DADOS NO BANCO
         DAOTipopokemon daoTipopokemon = new DAOTipopokemon();
         List<Tipopokemon> end = daoTipopokemon.list();
 
+        
+        end = daoTipopokemon.searchFast("a");
+        
+        
         end.forEach((e) -> {
             System.out.println(e.getId() + "-" + e.getSigla());
         });

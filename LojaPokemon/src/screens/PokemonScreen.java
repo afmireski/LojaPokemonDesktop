@@ -39,7 +39,10 @@ import tools.ImagemAjustada;
 import enums.DialogMessageType;
 import enums.DialogConfirmType;
 import java.util.Date;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import models.Pokemon;
 import models.Tipopokemon;
 
@@ -93,6 +96,8 @@ public class PokemonScreen extends JDialog {
     JPanel panL5C1 = new JPanel(); //Painel referente a posição da grade: Linha 5 - Coluna 1
     JPanel panL5C2 = new JPanel(); //Painel referente a posição da grade: Linha 5 - Coluna 2
 
+    JPanel panFK = new JPanel(new GridLayout(2, 1)); //Painel referente a FK
+
 //INSTANCIA DOS BUTTONS
     JButton btnCreate = components.buttonWithIcon("Create", "/icons/create.png");
     JButton btnRetrieve = components.buttonWithIcon("Retrieve", "/icons/retrieve.png");
@@ -122,19 +127,20 @@ public class PokemonScreen extends JDialog {
     JTextField txtId = new JTextField(5);
     JTextField txtNome = new JTextField(15);
     JTextField txtEstoque = new JTextField(6);
-    
+    JTextField txtSearchFK = new JTextField(10);
+
 //INSTANCIA DAS COMBO BOX
     JComboBox fkBox;
 
 //INSTANCIA DAS ENTIDADES
     Pokemon pokemon = new Pokemon();
-    
+
 //INSTANCIA DAS TABLE SCREENS
     PokemonTableScreen pokemonTableScreen;
-    
+
 //PATHS
     String currentPath = dda.getDiretorioDaAplicacao();
-    
+
 //IMAGE CONFIGURATIONS
     int defaultHeight = 256;
     int defaultWidth = 256;
@@ -149,7 +155,7 @@ public class PokemonScreen extends JDialog {
         //IMAGE INITIAl CONFIGURATIONS
         setImage(defaultImagePath);
         currentImage = defaultImagePath;
-        
+
         //FK CONFIGURATIONS
         fkBox = components.createComboBox(daoTipopokemon.getFKList());
 
@@ -216,8 +222,11 @@ public class PokemonScreen extends JDialog {
         panL2C2.add(txtEstoque);
 
         //Prenchimento Linha 3
+        panFK.add(components.createChildPanel(txtSearchFK, new FlowLayout(FlowLayout.CENTER)));
+        panFK.add(components.createChildPanel(fkBox, new FlowLayout(FlowLayout.CENTER)));
+
         panL3C1.add(lblTipoPokemonID);
-        panL3C2.add(fkBox);
+        panL3C2.add(panFK);
 
         //Prenchimento Linha 5
         panL5C2.add(btnAction);
@@ -237,6 +246,7 @@ public class PokemonScreen extends JDialog {
 
                             txtNome.setEditable(false);
                             txtEstoque.setEditable(false);
+                            txtSearchFK.setEditable(false);
                             fkBox.setEnabled(false);
 
                             txtId.setText(String.valueOf(pokemon.getId()));
@@ -268,9 +278,11 @@ public class PokemonScreen extends JDialog {
 
                             txtNome.setEditable(true);
                             txtEstoque.setEditable(true);
+                            txtSearchFK.setEditable(true);
                             fkBox.setEnabled(true);
                             txtNome.setText("");
                             txtEstoque.setText("");
+                            txtSearchFK.setText("");
                             fkBox.setSelectedIndex(0);
                             ImageIcon icon = imagemAjustada.getImagemAjustada(
                                     defaultImagePath,
@@ -329,6 +341,7 @@ public class PokemonScreen extends JDialog {
                 txtId.setEditable(false);
                 txtNome.setEditable(true);
                 txtEstoque.setEditable(true);
+                txtSearchFK.setEditable(true);
                 fkBox.setEnabled(true);
                 txtNome.requestFocus();
 
@@ -357,10 +370,10 @@ public class PokemonScreen extends JDialog {
                         pokemon.setTipoPokemonID(selectTipoPokemon());
                         pokemon.setDataCadastro(new Date());
                         if (actionController.equals(CrudAction.CREATE)) {
-                            pokemon.setImagem("/src/images/" + daoPokemon.autoincrement() + ".png");                            
-                        } else {                            
+                            pokemon.setImagem("/src/images/" + daoPokemon.autoincrement() + ".png");
+                        } else {
                             pokemon.setImagem("/src/images/" + txtId.getText() + ".png");
-                        }                        
+                        }
                         if (imageController) {
                             if (actionController.equals(CrudAction.UPDATE)) {
                                 copiaFoto(txtId.getText());
@@ -419,7 +432,7 @@ public class PokemonScreen extends JDialog {
 
                 int response = confirmDialog.getResponse();
 
-                if (response == JOptionPane.YES_OPTION) {                    
+                if (response == JOptionPane.YES_OPTION) {
 
                     File image = new File(currentImage.trim());
 
@@ -429,9 +442,9 @@ public class PokemonScreen extends JDialog {
                         }
                         setImage(defaultImagePath);
                     }
-                    
+
                     daoPokemon.delete(pokemon);
-                    
+
                     btnRetrieve.setEnabled(false);
                     btnUpdate.setEnabled(false);
                     btnDelete.setEnabled(false);
@@ -450,7 +463,7 @@ public class PokemonScreen extends JDialog {
                     txtId.requestFocus();
 
                     clearAllFields();
-                    
+
                     messageDialog = new BuildMessageDialog(
                             DialogMessageType.SUCESS,
                             "POKEMON EXCLUÍDO COM SUCESSO",
@@ -475,6 +488,7 @@ public class PokemonScreen extends JDialog {
                 listController = true;
             }
         });
+
         //BTN CANCEL ACTION LISTENER
         btnCancel.addActionListener(new ActionListener() {
             @Override
@@ -515,7 +529,7 @@ public class PokemonScreen extends JDialog {
                 }
             }
         });
-        
+
         btnRemoveImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -539,6 +553,7 @@ public class PokemonScreen extends JDialog {
                 }
             }
         });
+
         //Close Window Action
         addWindowListener(new WindowAdapter() {
             @Override
@@ -549,6 +564,22 @@ public class PokemonScreen extends JDialog {
                     listController = false;
                 }
                 dispose();
+            }
+        });
+
+        txtSearchFK.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent de) {
+                changeSearch();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent de) {
+                changeSearch();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent de) {
             }
         });
 
@@ -569,11 +600,12 @@ public class PokemonScreen extends JDialog {
         btnRemoveImage.setVisible(false);
     }
 
-    private void textFieldInitialConfiguration() {	
+    private void textFieldInitialConfiguration() {
         //TEXTFIELD INITIAL CONFIGURATIONS
         txtId.setEditable(true);
         txtNome.setEditable(false);
         txtEstoque.setEditable(false);
+        txtSearchFK.setEditable(false);
         fkBox.setEnabled(false);
     }
 
@@ -581,7 +613,8 @@ public class PokemonScreen extends JDialog {
         txtId.setText("");
         txtNome.setText("");
         txtEstoque.setText("");
-        fkBox.setSelectedIndex(0);        
+        txtSearchFK.setText("");
+        fkBox.setSelectedIndex(0);
 
         currentImage = defaultImagePath;
         setImage(defaultImagePath);
@@ -604,11 +637,33 @@ public class PokemonScreen extends JDialog {
 
         copiarArquivos.copiar(currentImage, destino);
     }
-    
+
     private Tipopokemon selectTipoPokemon() {
         String fk = fkBox.getSelectedItem().toString();
         Integer key = Integer.valueOf(fk.split(" - ")[0]);
         return daoTipopokemon.searchByID(key).get(0);
+    }
+
+    private void changeSearch() {
+        String search = txtSearchFK.getText();
+
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        List<String> elements;
+
+        if (search.trim().isEmpty()) {
+            elements = daoTipopokemon.getFKList();
+
+        } else {
+            elements = daoTipopokemon.getEspecificFKList(daoTipopokemon.searchFast(search));
+        }
+
+        if (elements != null && !elements.isEmpty()) {
+            for (String str : elements) {
+                model.addElement(str);
+            }
+        }
+
+        fkBox.setModel(model);
     }
 
 }
