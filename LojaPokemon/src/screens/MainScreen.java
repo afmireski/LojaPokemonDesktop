@@ -84,6 +84,9 @@ public class MainScreen extends JFrame {
         }),        
         createMenuItem("Novidades", (ae) -> {
             NovidadesScreen novidadesScreen = new NovidadesScreen();
+        }),
+        createMenuItem("Pokémon", (ae) -> {
+            PokemonScreen pokemonScreen = new PokemonScreen();
         })
     };
 
