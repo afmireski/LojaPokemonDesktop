@@ -60,13 +60,13 @@ public class PrecoTableScreen extends JDialog {
 
         panBody.setLayout(new GridLayout(1, 1));
 //TABELA
-        String colunas[] = new String[]{"POKEMON ID", "DATA VIGÊNCIA", "VALOR"};
+        String colunas[] = new String[]{"DATA VIGÊNCIA", "POKEMON ID", "VALOR"};
         Object dados[][] = new Object[this.precos.size()][colunas.length];
 
         String aux[];
 
         for (int i = 0; i < this.precos.size(); i++) {
-            aux = this.precos.get(i).toString().split(";");
+            aux = this.precos.get(i).toCSV().split(";");
             for (int j = 0; j < colunas.length; j++) {
                 dados[i][j] = aux[j];
             }

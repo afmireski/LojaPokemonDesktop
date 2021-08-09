@@ -88,14 +88,13 @@ public class PrecoScreen extends JDialog {
     JPanel panL3C2 = new JPanel(); //Painel referente a posição da grade: Linha 3 - Coluna 2
 
 //INSTANCIA DOS BUTTONS
-    JButton btnCreate = new JButton("Create");
-    JButton btnRetrieve = new JButton("Retrieve");
-    JButton btnUpdate = new JButton("Update");
-    JButton btnDelete = new JButton("Delete");
+    JButton btnCreate = components.buttonWithIcon("Create", "/icons/create.png");
+    JButton btnRetrieve = components.buttonWithIcon("Retrieve", "/icons/retrieve.png");
+    JButton btnUpdate = components.buttonWithIcon("Update", "/icons/update.png");
+    JButton btnDelete = components.buttonWithIcon("Delete", "/icons/delete.png");
     JButton btnAction = new JButton("Add to List");
-    JButton btnRemove = new JButton("Remove");
-    JButton btnCancel = new JButton("Cancel");
-    JButton btnList = new JButton("List");
+    JButton btnCancel = components.buttonWithIcon("Cancel", "/icons/cancel.png");
+    JButton btnList = components.buttonWithIcon("List", "/icons/list.png");
 
 //INSTANCIA DOS CONTROLLERS
     CrudAction actionController;
@@ -174,8 +173,6 @@ public class PrecoScreen extends JDialog {
         panBody.setLayout(new GridLayout(2, 2));
 
         //Prenchimento por Linha
-        panBody.add(panL1C1);
-        panBody.add(panL1C2);
         panBody.add(panL2C1);
         panBody.add(panL2C2);
         panBody.add(panL3C1);
@@ -193,7 +190,7 @@ public class PrecoScreen extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if (!txtSearchPokemon.getText().trim().isEmpty() && txtDataVigencia.getDate() != null) {
+                    if (pokemonBox.getSelectedItem() != null && txtDataVigencia.getDate() != null) {
                         pk.setDataVigencia(txtDataVigencia.getDate());
                         getPokemonID();
                         
@@ -283,7 +280,7 @@ public class PrecoScreen extends JDialog {
                     if (actionController.equals(CrudAction.CREATE)) {
                         preco = new Preco();
                     }
-                    if (txtDataVigencia.getDate() != null || txtValor.getText().trim().isEmpty()) {
+                    if (txtDataVigencia.getDate() == null || txtValor.getText().trim().isEmpty()) {
                         throw new Exception("Verifique se os seus campos estão preenchidos!");
                     } else {
                         pk.setDataVigencia(txtDataVigencia.getDate());
