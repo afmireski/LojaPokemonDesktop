@@ -661,9 +661,8 @@ public class PokemonScreen extends JDialog {
             for (String str : elements) {
                 model.addElement(str);
             }
+            fkBox.setModel(model);
         }
-
-        fkBox.setModel(model);
     }
 
 }

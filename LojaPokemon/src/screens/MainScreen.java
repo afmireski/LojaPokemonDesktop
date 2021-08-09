@@ -87,7 +87,10 @@ public class MainScreen extends JFrame {
         }),
         createMenuItem("Pokémon", (ae) -> {
             PokemonScreen pokemonScreen = new PokemonScreen();
-        })
+        }),
+        createMenuItem("Preço", (ae) -> {
+            PrecoScreen precoScreen = new PrecoScreen();
+        }),
     };
 
     private void createMenu() {

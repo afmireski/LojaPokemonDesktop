@@ -61,12 +61,14 @@ public class DateTextField extends JTextField {
     private void addListeners() {
         addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent paramMouseEvent) {
-                if (datePanel == null) {
+                if (isEditable() && isEnabled()) {
+                    if (datePanel == null) {
                     datePanel = new DatePanel();
                 }
                 Point point = getLocationOnScreen();
                 point.y = point.y + 30;
-                showDateDialog(datePanel, point);
+                showDateDialog(datePanel, point);                    
+                }
             }
         });
     }

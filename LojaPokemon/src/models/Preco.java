@@ -96,6 +96,10 @@ public class Preco implements Serializable {
         }
         return true;
     }
+    
+    public String toCSV() {
+        return this.precoPK.getDataVigencia() + ";" + this.precoPK.getPokemonID() + ";" + this.valor;
+    }
 
     @Override
     public String toString() {

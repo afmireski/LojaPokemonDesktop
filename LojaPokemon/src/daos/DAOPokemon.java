@@ -40,8 +40,10 @@ public class DAOPokemon extends DAOGeneric<Pokemon>{
     }
     
     public List<Pokemon> searchFast(String search) {
-        return em.createQuery("SELECT e FROM Pokemon e where e.id = :search or e.nome like %:search%").
-                setParameter("search", search).getResultList();
+        return em.createQuery("SELECT e FROM Pokemon e WHERE e.nome like :search or "
+                + "e.tipoPokemonID.sigla like :search or "
+                + "e.tipoPokemonID.descricao like :search").
+                setParameter("search", "%"+search+"%").getResultList();
     }
     
     public List<Pokemon> orderByID(boolean isDesc) {
@@ -68,6 +70,15 @@ public class DAOPokemon extends DAOGeneric<Pokemon>{
         List<String> fks = new ArrayList<>();
         
         this.orderByID(false).forEach((p) -> {
+            fks.add(p.toFK());
+        });
+        return fks;
+    }
+    
+    public List<String> getEspecificFKList(List<Pokemon> poke) {
+        List<String> fks = new ArrayList<>();
+        
+        poke.forEach((p) -> {
             fks.add(p.toFK());
         });
         return fks;
