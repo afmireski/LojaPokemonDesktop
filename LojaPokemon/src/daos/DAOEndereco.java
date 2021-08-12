@@ -5,6 +5,7 @@
  */
 package daos;
 
+import java.util.ArrayList;
 import java.util.List;
 import models.Endereco;
 import models.EnderecoPK;
@@ -41,6 +42,28 @@ public class DAOEndereco extends DAOGeneric<Endereco> {
 
     public List<Endereco> listOrderByUf() {
         return em.createQuery("SELECT e FROM Endereco e ORDER BY e.uf").getResultList();
+    }
+
+    public List<String> getFKList() {
+        List<String> fks = new ArrayList<>();
+        this.list().forEach((e) -> {
+            fks.add(e.toFK());
+        });
+        return fks;
+    }
+
+    public List<String> getSpecificFKList(List<Endereco> ed) {
+        List<String> fks = new ArrayList<>();
+        ed.forEach((e) -> {
+            fks.add(e.toFK());
+        });
+        return fks;
+    }
+    
+    public List<Endereco> searchFast(String search){
+        return em.createQuery("SELECT e FROM Endereco e WHERE "
+                + "e.enderecoPK.cep like :search or e.nome like :search or e.cidade like :search").
+                setParameter("search", "%" + search + "%").getResultList();
     }
 
     public static void main(String[] args) {
