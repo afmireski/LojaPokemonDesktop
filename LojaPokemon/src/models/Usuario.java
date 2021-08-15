@@ -159,7 +159,7 @@ public class Usuario implements Serializable {
     }
 
     public String toFK() {
-        return this.getId() + " - " + this.getSenha();
+        return this.getId() + " - " + this.getEmail();
     }
 
     @Override

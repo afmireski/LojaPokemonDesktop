@@ -178,10 +178,11 @@ public class CartaoScreen extends JDialog {
         //Prenchimento Linha 3
         panFK.add(components.createChildPanel(txtUsuarioID, new FlowLayout(FlowLayout.CENTER)));
         panFK.add(components.createChildPanel(usuarioBox, new FlowLayout(FlowLayout.CENTER)));
+        
+        panL3C1.add(lblUsuarioID);
+        panL3C2.add(panFK);
 
-        //Prenchimento Linha 4
-        panL4C1.add(lblUsuarioID);
-        panL4C2.add(txtUsuarioID);
+        //Prenchimento Linha 4        
 
         //Prenchimento Linha 5
         panL5C2.add(btnAction);
@@ -191,7 +192,7 @@ public class CartaoScreen extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (!txtId.getText().trim().isEmpty()) {
-                        cartao = daoCartao.get(Integer.valueOf(txtId.getText()));
+                        cartao = daoCartao.get(txtId.getText());
                         if (cartao != null) {
                             btnCreate.setEnabled(false);
                             btnCreate.setVisible(true);
@@ -451,6 +452,7 @@ public class CartaoScreen extends JDialog {
         txtSaldo.setEditable(false);
         txtNome.setEditable(false);      
         txtUsuarioID.setEditable(false);
+        usuarioBox.setEnabled(false);
     }
 
     private void clearAllFields() {
@@ -459,11 +461,12 @@ public class CartaoScreen extends JDialog {
         txtSaldo.setText("");
         txtNome.setText("");        
         txtUsuarioID.setText("");
+        usuarioBox.setSelectedIndex(0);
     }
     
      private Usuario selectUsuario() {
         String fk = usuarioBox.getSelectedItem().toString();
-        String id = fk.split(" - ")[0]; 
+        Integer id = Integer.valueOf(fk.split(" - ")[0]); 
         return daoUsuario.get(id);
     }
 
