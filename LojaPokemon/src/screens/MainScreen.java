@@ -91,6 +91,15 @@ public class MainScreen extends JFrame {
         createMenuItem("Preço", (ae) -> {
             PrecoScreen precoScreen = new PrecoScreen();
         }),
+        createMenuItem("Pessoa", (ae) -> {
+            PessoaScreen pessoaScreen = new PessoaScreen();
+        }),
+        createMenuItem("Usuário", (ae) -> {
+            UsuarioScreen usuarioScreen = new UsuarioScreen();
+        }),
+        createMenuItem("Cartão", (ae) -> {
+            CartaoScreen cartaoScreen = new CartaoScreen();
+        }),
     };
 
     private void createMenu() {

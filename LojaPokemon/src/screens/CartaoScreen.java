@@ -153,7 +153,7 @@ public class CartaoScreen extends JDialog {
 
         //PAN BODY CONFIGURATIONS
         panBody.setBorder(BorderFactory.createLineBorder(Color.black, 5));
-        panBody.setLayout(new GridLayout(5, 2));
+        panBody.setLayout(new GridLayout(4, 2));
 
         //Prenchimento por Linha
         panBody.add(panL1C1);
@@ -162,8 +162,6 @@ public class CartaoScreen extends JDialog {
         panBody.add(panL2C2);
         panBody.add(panL3C1);
         panBody.add(panL3C2);
-        panBody.add(panL4C1);
-        panBody.add(panL4C2);
         panBody.add(panL5C1);
         panBody.add(panL5C2);
 

@@ -20,10 +20,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //MainScreen mainScreen = new MainScreen();
-        //PessoaScreen pessoaScreen = new PessoaScreen();
-        //UsuarioScreen usuarioScreen = new UsuarioScreen();
-        CartaoScreen cartaoScreen = new CartaoScreen();
+        MainScreen mainScreen = new MainScreen();
     }   
 
 }

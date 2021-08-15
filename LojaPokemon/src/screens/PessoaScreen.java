@@ -242,7 +242,7 @@ public class PessoaScreen extends JDialog {
                             sexoBox.setSelectedIndex(0);
                             enderecoBox.setSelectedIndex(0);
                             txtEndereco.setText("");
-                            txtDataNascimento.setText(new Date());
+                            txtDataNascimento.setDate(new Date());
                         }
                     }
                 } catch (Exception excep) {
