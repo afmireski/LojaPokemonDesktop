@@ -158,9 +158,13 @@ public class Usuario implements Serializable {
         return true;
     }
 
+    public String toFK() {
+        return this.getId() + " - " + this.getEmail();
+    }
+
     @Override
     public String toString() {
-        return "models.Usuario[ id=" + id + " ]";
+        return id + ";" + email + ";" + senha + ";" + dataCriacao + ";" + ativo + ";" + pessoaCPF.getCpf();
     }
-    
+
 }

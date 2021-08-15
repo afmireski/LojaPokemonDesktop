@@ -133,11 +133,11 @@ public class Cartao implements Serializable {
             return false;
         }
         return true;
-    }
+    }    
 
     @Override
     public String toString() {
-        return "models.Cartao[ id=" + id + " ]";
+        return id + ";" + saldo + ";" + nome + ";" + dataCadastro + ";" + usuarioID.getId();
     }
-    
+
 }

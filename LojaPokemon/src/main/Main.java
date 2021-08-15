@@ -5,7 +5,10 @@
  */
 package main;
 
+import screens.CartaoScreen;
 import screens.MainScreen;
+import screens.PessoaScreen;
+import screens.UsuarioScreen;
 
 /**
  *
@@ -17,7 +20,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        MainScreen mainScreen = new MainScreen();
-    }
+        //MainScreen mainScreen = new MainScreen();
+        //PessoaScreen pessoaScreen = new PessoaScreen();
+        //UsuarioScreen usuarioScreen = new UsuarioScreen();
+        CartaoScreen cartaoScreen = new CartaoScreen();
+    }   
 
 }
