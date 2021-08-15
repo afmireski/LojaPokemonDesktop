@@ -149,10 +149,15 @@ public class Pessoa implements Serializable {
         }
         return true;
     }
+    
+    public String toFK(){
+        return this.getCpf() + " - " + this.getNome(); 
+    }
 
     @Override
     public String toString() {
-        return "models.Pessoa[ cpf=" + cpf + " ]";
+        return cpf + ";" + nome + ";" + dataNascimento + ";" + sexo + ";" + sexoDescricao + ";" 
+                + endereco.getEnderecoPK().getCep() + ";" + endereco.getEnderecoPK().getNCasa(); 
     }
     
 }

@@ -3,22 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package daos;
 
 import java.util.ArrayList;
 import java.util.List;
-import models.Pessoa;
+import models.Usuario;
 
 /**
  *
- * @author Matheus
+ * @author Matheus 
  */
-public class DAOPessoa extends DAOGeneric<Pessoa> {
+public class DAOUsuario extends DAOGeneric<Usuario>{
 
-    public DAOPessoa() {
-        super(Pessoa.class);
+    public DAOUsuario() {
+        super(Usuario.class);
     }
-
+    
     public List<String> getFKList() {
         List<String> fks = new ArrayList<>();
         this.list().forEach((e) -> {
@@ -27,7 +28,7 @@ public class DAOPessoa extends DAOGeneric<Pessoa> {
         return fks;
     }
 
-    public List<String> getSpecificFKList(List<Pessoa> p) {
+    public List<String> getSpecificFKList(List<Usuario> p) {
         List<String> fks = new ArrayList<>();
         p.forEach((e) -> {
             fks.add(e.toFK());
@@ -35,18 +36,18 @@ public class DAOPessoa extends DAOGeneric<Pessoa> {
         return fks;
     }
 
-    public List<Pessoa> searchFast(String search) {
-        return em.createQuery("SELECT p FROM Pessoa p WHERE p.cpf like :search or p.nome like :search").
+    public List<Usuario> searchFast(String search) {
+        return em.createQuery("SELECT u FROM Usuario u WHERE u.email like :search").
                 setParameter("search", "%" + search + "%").getResultList();
     }
-
-    public static void main(String[] args) {
+    
+     public static void main(String[] args) {
         ///VERIFICA OS DADOS NO BANCO
-        DAOPessoa daoPessoa = new DAOPessoa();
-        List<Pessoa> end = daoPessoa.list();
+        DAOUsuario daoUsuario = new DAOUsuario();
+        List<Usuario> end = daoUsuario.list();
 
         end.forEach((e) -> {
-            System.out.println(e.getCpf() + "-" + e.getNome());
+            System.out.println(e.getId() + "-" + e.getPessoaCPF());
         });
     }
 

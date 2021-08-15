@@ -7,6 +7,7 @@ package main;
 
 import screens.MainScreen;
 import screens.PessoaScreen;
+import screens.UsuarioScreen;
 
 /**
  *
@@ -19,7 +20,8 @@ public class Main {
      */
     public static void main(String[] args) {
         //MainScreen mainScreen = new MainScreen();
-        PessoaScreen pessoaScreen = new PessoaScreen();
+        //PessoaScreen pessoaScreen = new PessoaScreen();
+        UsuarioScreen usuarioScreen = new UsuarioScreen();
     }   
 
 }

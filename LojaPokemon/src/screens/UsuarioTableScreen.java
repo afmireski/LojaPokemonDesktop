@@ -10,13 +10,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
-import models.Pessoa;
+import models.Usuario;
 
 /**
  *
  * @author Matheus 
  */
-public class PessoaTableScreen extends JDialog{
+public class UsuarioTableScreen extends JDialog{
 
 //INSTANCIA DOS CONTAINERS
     Container container;
@@ -30,8 +30,7 @@ public class PessoaTableScreen extends JDialog{
     JPanel panBody = new JPanel();
 
 //TABELA
-String colunas[] = new String[]{"CPF", "NOME", "DATA DE NASCIMENTO" ,"SEXO", "SEXO DESCRIÇÃO", 
-    "ENDEREÇO CEP", "ENDEREÇO N°CASA"};
+String colunas[] = new String[]{"ID", "EMAIL", "SENHA", "DATA DE CRIAÇÃO", "ATIVO", "PESSOA"};
 String linhas[][] = new String[0][colunas.length];
 
 DefaultTableModel tableModel = new DefaultTableModel(linhas, colunas);
@@ -40,15 +39,15 @@ DefaultTableModel tableModel = new DefaultTableModel(linhas, colunas);
     private JScrollPane scrollTable = new JScrollPane();
 
 //DADOS
-    List<Pessoa> pessoas;
+    List<Usuario> usuarios;
 
 
-public PessoaTableScreen(List<Pessoa> pessoas) {
-this.pessoas = pessoas;
+public UsuarioTableScreen(List<Usuario> usuarios) {
+this.usuarios = usuarios;
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - PESSOA");
+        setTitle("CRUD - USUARIO");
 
 
 	//CONTAINER CONFIGURATIONS
@@ -63,14 +62,13 @@ this.pessoas = pessoas;
 
 panBody.setLayout(new GridLayout(1, 1));
 //TABELA
-String colunas[] = new String[]{"CPF", "NOME", "DATA DE NASCIMENTO" ,"SEXO", "SEXO DESCRIÇÃO", 
-    "ENDEREÇO CEP", "ENDEREÇO N°CASA"};
-Object dados[][] = new Object[this.pessoas.size()][colunas.length];
+String colunas[] = new String[]{"ID", "EMAIL", "SENHA", "DATA DE CRIAÇÃO", "ATIVO", "PESSOA"};
+Object dados[][] = new Object[this.usuarios.size()][colunas.length];
 
 String aux[];
 
-        for (int i = 0; i < this.pessoas.size(); i++) {
-            aux = this.pessoas.get(i).toString().split(";");
+        for (int i = 0; i < this.usuarios.size(); i++) {
+            aux = this.usuarios.get(i).toString().split(";");
             for (int j = 0; j < colunas.length; j++) {
                 dados[i][j] = aux[j];
             }

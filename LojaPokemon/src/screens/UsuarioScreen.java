@@ -1,9 +1,13 @@
 package screens;
 
-import daos.DAOEndereco;
 import daos.DAOPessoa;
+import daos.DAOUsuario;
 import functions.ConvertToEnum;
 import functions.ConvertFromEnum;
+import java.util.ArrayList;
+import java.util.List;
+import tools.CaixaDeFerramentas;
+import tools.ManipulaArquivo;
 import functions.VerifyPK;
 import helpers.BuildConfirmDialog;
 import helpers.BuildMessageDialog;
@@ -12,6 +16,7 @@ import helpers.GenericComponents;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -22,31 +27,31 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import tools.CaixaDeFerramentas;
 import tools.Tools;
 import enums.DialogMessageType;
 import enums.DialogConfirmType;
-import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import models.Endereco;
-import models.EnderecoPK;
 import models.Pessoa;
-import tools.DateTextField;
+import models.Usuario;
 
 /**
  *
  * @author Matheus
  */
-public class PessoaScreen extends JDialog {
+public class UsuarioScreen extends JDialog {
 
 //INSTANCIA DOS HELPERS
     GenericComponents components = new GenericComponents();
@@ -85,7 +90,7 @@ public class PessoaScreen extends JDialog {
     JPanel panL4C2 = new JPanel(); //Painel referente a posição da grade: Linha 4 - Coluna 2
     JPanel panL5C1 = new JPanel(); //Painel referente a posição da grade: Linha 5 - Coluna 1
     JPanel panL5C2 = new JPanel(); //Painel referente a posição da grade: Linha 5 - Coluna 2
-    JPanel panFK = new JPanel(new GridLayout(2, 1)); 
+    JPanel panFK = new JPanel(new GridLayout(2, 1));
 
 //INSTANCIA DOS BUTTONS
     JButton btnCreate = components.buttonWithIcon("Create", "/icons/create.png");
@@ -99,45 +104,39 @@ public class PessoaScreen extends JDialog {
 //INSTANCIA DOS CONTROLLERS
     String actionController;
     boolean listController = false;
+    DAOUsuario daoUsuario = new DAOUsuario();
     DAOPessoa daoPessoa = new DAOPessoa();
-    DAOEndereco daoEndereco = new DAOEndereco();
 
 //INSTANCIA DOS LABELS
-    JLabel lblCpf = new JLabel("CPF");
-    JLabel lblDataNascimento = new JLabel("DATA DE NASCIMENTO");
-    JLabel lblNome = new JLabel("NOME");
-    JLabel lblSexo = new JLabel("SEXO");
-    JLabel lblEndereco = new JLabel("ENDERECO");
+    JLabel lblId = new JLabel("ID");
+    JLabel lblEmail = new JLabel("EMAIL");
+    JLabel lblAtivo = new JLabel("ATIVO");
+    JLabel lblPessoaSearch = new JLabel("PESSOA");
+    JLabel lblSenha = new JLabel("SENHA");
 
 //INSTANCIA DOS TEXTFIELD
-    JTextField txtCpf = new JTextField(12);
-    JTextField txtNome = new JTextField(20);
-    JTextField txtEndereco = new JTextField(15);
-    DateTextField txtDataNascimento = new DateTextField();
-    
-//INSTANCIA DOS COMBOBOXES
-    String[] sexos = {"Masculino", "Feminino"}; 
-    JComboBox sexoBox;
-    JComboBox enderecoBox;
-    
-//INSTANCIA DAS ENTIDADES
-    Pessoa pessoa = new Pessoa();
-//INSTANCIA DAS TABLE SCREENS
-    PessoaTableScreen pessoaTableScreen;
+    JTextField txtId = new JTextField(10);
+    JTextField txtEmail = new JTextField(20);
+    JCheckBox txtAtivo = new JCheckBox();
+    JTextField txtPessoaSearch = new JTextField(10);
+    JTextField txtSenha = new JTextField(10);
 
-    public PessoaScreen() {
+//INSTANCIA COMBOBOX
+    JComboBox pessoaBox;
+
+//INSTANCIA DAS ENTIDADES
+    Usuario usuario = new Usuario();
+//INSTANCIA DAS TABLE SCREENS
+    UsuarioTableScreen usuarioTableScreen;
+
+    public UsuarioScreen() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - PESSOA");
-        
-        
-        sexoBox = components.createComboBox(Arrays.asList(sexos)); 
-        enderecoBox = components.createComboBox(daoEndereco.getFKList()); 
+        setTitle("CRUD - USUARIO");
 
-        //BUTTONS INITIAL CONFIGURATIONS
+        pessoaBox = components.createComboBox(daoPessoa.getFKList());
+
         buttonsInitialConfiguration();
-
-        //TEXTFIELD INITIAL CONFIGURATIONS
         textFieldInitialConfiguration();
 
         //CONTAINER CONFIGURATIONS
@@ -151,8 +150,8 @@ public class PessoaScreen extends JDialog {
 
         //PAN NORTH CONFIGURATIONS
         panNorth.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panNorth.add(lblCpf);
-        panNorth.add(txtCpf);
+        panNorth.add(lblId);
+        panNorth.add(txtId);
 
         panNorth.add(btnRetrieve);
         panNorth.add(btnCreate);
@@ -180,69 +179,67 @@ public class PessoaScreen extends JDialog {
         panBody.add(panL5C2);
 
         //Prenchimento Linha 1
-        panL1C1.add(lblNome);
-        panL1C2.add(txtNome);
+        panL1C1.add(lblEmail);
+        panL1C2.add(txtEmail);
 
         //Prenchimento Linha 2
-        panL2C1.add(lblSexo);
-        panL2C2.add(sexoBox);
+        panL2C1.add(lblAtivo);
+        panL2C2.add(txtAtivo);
 
         //Prenchimento Linha 3
-        
-        panFK.add(components.createChildPanel(txtEndereco, new FlowLayout(FlowLayout.CENTER)));
-        panFK.add(components.createChildPanel(enderecoBox, new FlowLayout(FlowLayout.CENTER)));
-                
-        panL3C1.add(lblEndereco);
+        panFK.add(components.createChildPanel(txtPessoaSearch, new FlowLayout(FlowLayout.CENTER)));
+        panFK.add(components.createChildPanel(pessoaBox, new FlowLayout(FlowLayout.CENTER)));
+
+        panL3C1.add(lblPessoaSearch);
         panL3C2.add(panFK);
 
         //Prenchimento Linha 4
-        panL4C1.add(lblDataNascimento);
-        panL4C2.add(txtDataNascimento);
-        
+        panL4C1.add(lblSenha);
+        panL4C2.add(txtSenha);
+
         //Prenchimento Linha 5
         panL5C2.add(btnAction);
-        
         //BTN RETRIEVE ACTION LISTENER
         btnRetrieve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if (!txtCpf.getText().trim().isEmpty()) {
-                        pessoa = daoPessoa.get(txtCpf.getText());
-                        if (pessoa != null) {
+                    if (!txtId.getText().trim().isEmpty()) {
+                        usuario = daoUsuario.get(Integer.valueOf(txtId.getText()));
+                        if (usuario != null) {
                             btnCreate.setEnabled(false);
                             btnCreate.setVisible(true);
                             btnUpdate.setEnabled(true);
                             btnUpdate.setVisible(true);
                             btnDelete.setEnabled(true);
 
-                            txtNome.setEditable(false);
-                            sexoBox.setEnabled(false);
-                            enderecoBox.setEnabled(false);
-                            txtEndereco.setEditable(false);
-                            txtDataNascimento.setEditable(false);
+                            txtEmail.setEditable(false);
+                            txtAtivo.setEnabled(false);
+                            pessoaBox.setEnabled(false);
+                            txtPessoaSearch.setEditable(false);
+                            txtSenha.setEditable(false);
 
-                            txtCpf.setText(String.valueOf(pessoa.getCpf()));
-                            txtNome.setText(String.valueOf(pessoa.getNome()));
-                            enderecoBox.setSelectedItem(pessoa.getEndereco().toFK());
-                            sexoBox.setSelectedItem(pessoa.getSexoDescricao());                          
-                            txtDataNascimento.setDate(pessoa.getDataNascimento());
+                            txtId.setText(String.valueOf(usuario.getId()));
+                            txtEmail.setText(String.valueOf(usuario.getEmail()));
+                            txtAtivo.setSelected(usuario.getAtivo());
+                            pessoaBox.setSelectedItem(usuario.getPessoaCPF().toFK());
+                            txtSenha.setText(String.valueOf(usuario.getSenha()));
                         } else {
                             btnCreate.setEnabled(true);
                             btnCreate.setVisible(true);
                             btnUpdate.setEnabled(false);
                             btnDelete.setEnabled(false);
 
-                            txtNome.setEditable(true);
-                            sexoBox.setEnabled(true);
-                            enderecoBox.setEnabled(true);
-                            txtEndereco.setEditable(true);
-                            txtDataNascimento.setEditable(true);
-                            txtNome.setText("");
-                            sexoBox.setSelectedIndex(0);
-                            enderecoBox.setSelectedIndex(0);
-                            txtEndereco.setText("");
-                            txtDataNascimento.setText(new Date());
+                            txtEmail.setEditable(true);
+                            txtAtivo.setEnabled(true);
+                            pessoaBox.setEnabled(true);
+                            txtPessoaSearch.setEditable(true);
+                            txtSenha.setEditable(true);
+                            txtEmail.setText("");
+                            txtAtivo.setText("");
+                            pessoaBox.setSelectedIndex(0);
+                            txtPessoaSearch.setText("");
+                            txtSenha.setText("");
                         }
                     }
                 } catch (Exception excep) {
@@ -266,9 +263,9 @@ public class PessoaScreen extends JDialog {
                 btnCreate.setVisible(false);
                 btnCancel.setVisible(true);
                 btnAction.setVisible(true);
-                txtDataNascimento.setEditable(true);
-                txtCpf.setEditable(false);
-                txtNome.requestFocus();
+
+                txtId.setEditable(false);
+                txtEmail.requestFocus();
 
                 actionController = "CREATE";
 
@@ -287,14 +284,13 @@ public class PessoaScreen extends JDialog {
                 btnCancel.setVisible(true);
                 btnAction.setVisible(true);
 
-                txtCpf.setEditable(false);
-                txtNome.setEditable(true);
-                sexoBox.setEnabled(true);
-                enderecoBox.setEnabled(true);
-                txtEndereco.setEditable(true);
-                txtDataNascimento.setEditable(true);
-                
-                txtNome.requestFocus();
+                txtId.setEditable(false);
+                txtEmail.setEditable(true);
+                txtAtivo.setEnabled(true);
+                pessoaBox.setEnabled(true);
+                txtPessoaSearch.setEditable(true);
+                txtSenha.setEditable(true);
+                txtEmail.requestFocus();
 
                 actionController = "UPDATE";
 
@@ -308,23 +304,23 @@ public class PessoaScreen extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (actionController.equalsIgnoreCase("CREATE")) {
-                        pessoa = new Pessoa();
+                        usuario = new Usuario();
                     }
-                    if (txtNome.getText().trim().isEmpty()) {
+                    if (txtEmail.getText().trim().isEmpty() || txtSenha.getText().trim().isEmpty()) {
                         throw new Exception("Verifique se os seus campos estão preenchidos!");
                     } else {
-                        pessoa.setCpf(txtCpf.getText());
-                        pessoa.setNome(txtNome.getText());
-                        pessoa.setSexo(sexoBox.getSelectedItem().toString().substring(0,1));
-                        pessoa.setSexoDescricao(sexoBox.getSelectedItem().toString());
-                        pessoa.setDataNascimento(txtDataNascimento.getDate());
-                        pessoa.setEndereco(selectEndereco());
+                        usuario.setId(Integer.valueOf(txtId.getText()));
+                        usuario.setEmail(txtEmail.getText());
+                        usuario.setAtivo(txtAtivo.isSelected());
+                        usuario.setSenha(txtSenha.getText());
+                        usuario.setDataCriacao(new Date());
+                        usuario.setPessoaCPF(selectPessoa());
                     }
                     if (actionController.equalsIgnoreCase("CREATE")) {
-                        daoPessoa.insert(pessoa);
-                        System.out.println("PESSOA ADICIONADO!");
+                        daoUsuario.insert(usuario);
+                        System.out.println("USUARIO ADICIONADO!");
                     } else if (actionController.equalsIgnoreCase("UPDATE")) {
-                        daoPessoa.update(pessoa);
+                        daoUsuario.update(usuario);
                         System.out.println("LISTA ATUALIZADA!");
                     } else {
 
@@ -339,13 +335,13 @@ public class PessoaScreen extends JDialog {
                     btnCreate.setVisible(true);
                     btnCreate.setEnabled(false);
                     btnCancel.setVisible(false);
-
                     textFieldInitialConfiguration();
-                   
-                    txtCpf.requestFocus();
+
+                    txtId.setEditable(true);
+                    txtId.requestFocus();
+
                     clearAllFields();
 
-                  
                 } catch (Exception excep) {
                     errorTools.showExceptionStackTrace(excep);
                     messageDialog = new BuildMessageDialog(
@@ -369,7 +365,6 @@ public class PessoaScreen extends JDialog {
                 int response = confirmDialog.getResponse();
 
                 if (response == JOptionPane.YES_OPTION) {
-                    daoPessoa.delete(pessoa);
                     btnRetrieve.setEnabled(false);
                     btnUpdate.setEnabled(false);
                     btnDelete.setEnabled(false);
@@ -378,17 +373,20 @@ public class PessoaScreen extends JDialog {
                     actionController = "DELETE";
                     btnAction.setVisible(false);
                     btnRetrieve.setEnabled(true);
-                    
-                    textFieldInitialConfiguration();                    
-                    txtCpf.requestFocus();
+
+                    txtId.setEditable(true);
+                    textFieldInitialConfiguration();
+                    txtId.requestFocus();
+
                     clearAllFields();
-                  
+                    daoUsuario.delete(usuario);
+
                     messageDialog = new BuildMessageDialog(
                             DialogMessageType.SUCESS,
-                            "PESSOA EXCLUÍDO COM SUCESSO",
+                            "USUARIO EXCLUÍDO COM SUCESSO",
                             "DELETE",
                             container);
-                    System.out.println("PESSOA EXCLUÍDO");
+                    System.out.println("USUARIO EXCLUÍDO");
                 }
             }
         });
@@ -400,11 +398,11 @@ public class PessoaScreen extends JDialog {
                 // A JANELA TABELA SÓ PODE SER ABERTA SE TABLESCREEN NÃO ESTIVER ATIVA.
                 if (listController) {
                     //SE TABLE SCREEN ESTIVER ATIVA, A FECHA ANTES DE ABRIR NOVAMENTE.
-                    pessoaTableScreen.dispose();
+                    usuarioTableScreen.dispose();
                     listController = false;
                 }
-                List<Pessoa> pessoas = daoPessoa.list();
-                pessoaTableScreen = new PessoaTableScreen(pessoas);
+                List<Usuario> usuarios = daoUsuario.list();
+                usuarioTableScreen = new UsuarioTableScreen(usuarios);
                 listController = true;
             }
         });
@@ -413,32 +411,29 @@ public class PessoaScreen extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //RETORNA A TELA AO ESTADO INICIAL
-                //BUTTONS INITIAL CONFIGURATIONS
                 buttonsInitialConfiguration();
-
-                //TEXTFIELD INITIAL CONFIGURATIONS
                 textFieldInitialConfiguration();
-
                 clearAllFields();
-                txtCpf.requestFocus();
+
+                txtId.requestFocus();
 
             }
         });
 
-        //Close Window Action
+//Close Window Action
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 if (listController) {
                     //SE TABLE SCREEN ESTIVER ATIVA, A FECHA ANTES DE ABRIR NOVAMENTE.
-                    pessoaTableScreen.dispose();
+                    usuarioTableScreen.dispose();
                     listController = false;
                 }
                 dispose();
             }
         });
         
-        txtEndereco.getDocument().addDocumentListener(new DocumentListener() {
+        txtPessoaSearch.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent de) {
                 changeSearch();
@@ -459,7 +454,7 @@ public class PessoaScreen extends JDialog {
         setVisible(true);
     }
 
-    private void buttonsInitialConfiguration() {
+    private void buttonsInitialConfiguration() {	//BUTTONS INITIAL CONFIGURATIONS
         btnRetrieve.setEnabled(true);
         btnCancel.setVisible(false);
         btnList.setVisible(true);
@@ -469,48 +464,50 @@ public class PessoaScreen extends JDialog {
         btnDelete.setEnabled(false);
     }
 
-    private void textFieldInitialConfiguration() {
-        txtCpf.setEditable(true);
-        txtNome.setEditable(false);
-        sexoBox.setEnabled(false);
-        enderecoBox.setEnabled(false);
-        txtEndereco.setEditable(false);
-        txtDataNascimento.setEditable(false);
+    private void textFieldInitialConfiguration() {	//TEXTFIELD INITIAL CONFIGURATIONS
+        txtId.setEditable(true);
+        txtEmail.setEditable(false);
+        txtAtivo.setEnabled(false);
+        pessoaBox.setEnabled(false);
+        txtPessoaSearch.setEditable(false);
+        txtSenha.setEditable(false);
     }
 
     private void clearAllFields() {
-        txtCpf.setText("");
-        txtNome.setText("");
-        sexoBox.setSelectedIndex(0);
-        enderecoBox.setSelectedIndex(0);
-        txtEndereco.setText("");
-        txtDataNascimento.setDate(new Date());
+
+        txtId.setText("");
+        txtEmail.setText("");
+        txtAtivo.setText("");
+        pessoaBox.setSelectedIndex(0);
+        txtPessoaSearch.setText("");
+        txtSenha.setText("");
     }
-    
-    private Endereco selectEndereco(){
-        String fk = enderecoBox.getSelectedItem().toString(); 
-        EnderecoPK pk = new EnderecoPK(fk.split(" - ")[0], Integer.valueOf(fk.split(" - ")[1])); 
-        return daoEndereco.get(pk); 
+
+    private Pessoa selectPessoa() {
+        String fk = pessoaBox.getSelectedItem().toString();
+        String cpf = fk.split(" - ")[0]; 
+        return daoPessoa.get(cpf);
     }
-    
-    private void changeSearch(){
-        String search = txtEndereco.getText();
+
+    private void changeSearch() {
+        String search = txtPessoaSearch.getText();
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         List<String> elements;
 
         if (search.trim().isEmpty()) {
-            elements = daoEndereco.getFKList();
+            elements = daoPessoa.getFKList();
 
         } else {
-            elements = daoEndereco.getSpecificFKList(daoEndereco.searchFast(search));
+            elements = daoPessoa.getSpecificFKList(daoPessoa.searchFast(search));
         }
 
         if (elements != null && !elements.isEmpty()) {
             for (String str : elements) {
                 model.addElement(str);
             }
-            enderecoBox.setModel(model);
+            pessoaBox.setModel(model);
         }
     }
+
 }
