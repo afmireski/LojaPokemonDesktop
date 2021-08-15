@@ -190,6 +190,13 @@ public class CartaoScreen extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (!txtId.getText().trim().isEmpty()) {
+                        if (!txtId.getText().matches("[0-9]*")) {
+                            throw new Exception("Digite somente números!");
+                        } 
+                        if (txtId.getText().length() != 16) {
+                            throw new Exception("O ID deve ter obrigatoriamente 16 digítos!");                            
+                        }
+                        
                         cartao = daoCartao.get(txtId.getText());
                         if (cartao != null) {
                             btnCreate.setEnabled(false);
