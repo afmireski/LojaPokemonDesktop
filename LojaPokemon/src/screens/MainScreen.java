@@ -27,6 +27,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import models.Pedido;
 import tools.CaixaDeFerramentas;
 import tools.CopiarArquivos;
 import tools.DiretorioDaAplicacao;
@@ -99,6 +100,9 @@ public class MainScreen extends JFrame {
         }),
         createMenuItem("Cartão", (ae) -> {
             CartaoScreen cartaoScreen = new CartaoScreen();
+        }),
+        createMenuItem("Pedido", (ae) -> {
+            PedidoScreen pedidoScreen = new PedidoScreen();
         }),
     };
 

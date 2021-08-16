@@ -20,6 +20,10 @@ public class DAOUsuario extends DAOGeneric<Usuario>{
         super(Usuario.class);
     }
     
+   public List<Usuario> searchByID(Integer id) {
+       return em.createQuery("SELECT e FROM Usuario e WHERE e.id = :id", Usuario.class).setParameter("id", id).getResultList();
+   }
+     
     public List<String> getFKList() {
         List<String> fks = new ArrayList<>();
         this.list().forEach((e) -> {

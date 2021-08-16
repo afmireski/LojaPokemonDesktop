@@ -6,6 +6,7 @@
 
 package daos;
 
+import java.util.ArrayList;
 import java.util.List;
 import models.Cartao;
 
@@ -17,6 +18,33 @@ public class DAOCartao extends DAOGeneric<Cartao>{
     
     public DAOCartao() {
         super(Cartao.class);
+    }
+    
+    public List<Cartao> searchFast(String search) {
+        return em.createQuery("SELECT e FROM Cartao e WHERE "
+                + "e.id like :search or "
+                + "e.nome like :search", Cartao.class)
+                .setParameter("search", "%" + search + "%").getResultList();
+    }
+    
+    public List<String> toFKList() {
+        List<String> fks = new ArrayList<>();
+        
+        this.list().forEach((c) -> {
+            fks.add(c.toFK());
+        });
+        
+        return fks;
+    }
+    
+    public List<String> toSpecificFKList(List<Cartao> cartaos) {
+        List<String> fks = new ArrayList<>();
+        
+        cartaos.forEach((c) -> {
+            fks.add(c.toFK());
+        });
+        
+        return fks;
     }
     
      public static void main(String[] args) {

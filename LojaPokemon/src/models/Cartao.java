@@ -134,6 +134,10 @@ public class Cartao implements Serializable {
         }
         return true;
     }    
+    
+    public String toFK() {
+        return this.id + " - " + this.nome;
+    }
 
     @Override
     public String toString() {

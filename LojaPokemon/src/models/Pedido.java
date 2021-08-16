@@ -111,6 +111,11 @@ public class Pedido implements Serializable {
         }
         return true;
     }
+    
+    public String toCSV() {
+        return id + ";" + dataPedido + ";" + cartaoID.getId() + ";" + usuarioID.getId();
+    }
+    
 
     @Override
     public String toString() {
