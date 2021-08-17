@@ -23,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import tools.CaixaDeFerramentas;
 
 /**
  *
@@ -155,7 +156,8 @@ public class Pokemon implements Serializable {
     }
     
     public String toCSV() {
-        return id + ";" + nome + ";" + dataCadastro + ";" + estoque + ";" + imagem + ";" + tipoPokemonID.getSigla();
+        CaixaDeFerramentas cf = new CaixaDeFerramentas();
+        return id + ";" + nome + ";" + cf.converteDeDateParaString(dataCadastro) + ";" + estoque + ";" + imagem + ";" + tipoPokemonID.getSigla();
     }
 
     @Override
