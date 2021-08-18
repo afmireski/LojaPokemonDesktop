@@ -31,7 +31,7 @@ public class PedidoHasPokemonTableScreen extends JDialog {
     JPanel panBody = new JPanel();
 
 //TABELA
-    String colunas[] = new String[]{"PEDIDO", "POKEMON", "QUANTIDADE", "VALORUNITARIO"};
+    String colunas[] = new String[]{"PEDIDO", "POKEMON", "QUANTIDADE", "VALOR UNITÁRIO"};
     String linhas[][] = new String[0][colunas.length];
 
     DefaultTableModel tableModel = new DefaultTableModel(linhas, colunas);
@@ -47,7 +47,7 @@ public class PedidoHasPokemonTableScreen extends JDialog {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - PEDIDOHASPOKEMON");
+        setTitle("CRUD - PEDIDO HAS POKEMON");
 
         //CONTAINER CONFIGURATIONS
         container = getContentPane();

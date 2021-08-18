@@ -34,7 +34,11 @@ import tools.CaixaDeFerramentas;
 import tools.Tools;
 import enums.DialogMessageType;
 import enums.DialogConfirmType;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import models.PedidoHasPokemon;
 import models.PedidoHasPokemonPK;
 
@@ -131,7 +135,7 @@ public class PedidoHasPokemonScreen extends JDialog {
     public PedidoHasPokemonScreen() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - PEDIDOHASPOKEMON");
+        setTitle("CRUD - PEDIDO HAS POKEMON");
 
         pokemonBox = components.createComboBox(daoPokemon.getFKList());
         pedidoBox = components.createComboBox(daoPedido.getFKList());
@@ -213,7 +217,6 @@ public class PedidoHasPokemonScreen extends JDialog {
                         txtValorUnitario.setEditable(false);
 
                         txtQuantidade.setText(String.valueOf(pedidoHasPokemon.getQuantidade()));
-//                        txtValorUnitario.setText(String.valueOf(pedidoHasPokemon.getValorUnitario()));
                     } else {
                         btnCreate.setEnabled(true);
                         btnCreate.setVisible(true);
@@ -374,10 +377,9 @@ public class PedidoHasPokemonScreen extends JDialog {
 
                     messageDialog = new BuildMessageDialog(
                             DialogMessageType.SUCESS,
-                            "PEDIDOHASPOKEMON EXCLUÍDO COM SUCESSO",
+                            "PEDIDO HAS POKEMON EXCLUÍDO COM SUCESSO",
                             "DELETE",
                             container);
-                    System.out.println("PEDIDOHASPOKEMON EXCLUÍDO");
                 }
             }
         });
@@ -421,6 +423,38 @@ public class PedidoHasPokemonScreen extends JDialog {
                     listController = false;
                 }
                 dispose();
+            }
+        });
+        
+        txtPokemon.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent de) {
+                changeSearchPokemon();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent de) {
+                changeSearchPokemon();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent de) {
+            }
+        });
+        
+        txtPedido.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent de) {
+                changeSearchPedido();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent de) {
+                changeSearchPedido();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent de) {
             }
         });
 
@@ -475,6 +509,55 @@ public class PedidoHasPokemonScreen extends JDialog {
     private void getPK() {
         getPedidoID();
         getPokemonID();
+    }
+    
+    private void changeSearchPokemon() {
+        String search = txtPokemon.getText();
+        
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        List<String> elements;
+
+        if (search.trim().isEmpty()) {
+            elements = daoPokemon.getFKList();
+
+        } else {
+            elements = daoPokemon.getEspecificFKList(daoPokemon.searchFast(search));
+        }
+
+        if (elements != null && !elements.isEmpty()) {
+            for (String str : elements) {
+                model.addElement(str);
+            }
+            
+            pokemonBox.setModel(model);
+        }
+
+    }
+    
+    private void changeSearchPedido() {
+        String search = txtPedido.getText();
+        
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        List<String> elements = new ArrayList<>();
+
+        if (search.trim().isEmpty()) {
+            elements = daoPedido.getFKList();
+
+        } else {
+            if (txtPedido.getText().matches("[0-9]*")) {
+                Integer id = Integer.valueOf(txtPedido.getText());
+                elements = daoPedido.getEspecificFKList(daoPedido.searchFast(id));
+            }
+        }
+
+        if (elements != null && !elements.isEmpty()) {
+            for (String str : elements) {
+                model.addElement(str);
+            }
+            
+            pedidoBox.setModel(model);
+        }
+
     }
 
 }

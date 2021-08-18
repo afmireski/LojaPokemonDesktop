@@ -20,7 +20,7 @@ public class DAOPedido extends DAOGeneric<Pedido> {
     }
     
     public List<Pedido> searchFast(Integer search) {
-        return em.createQuery("SELECT e FROM Pedido e WHERE e.id = :search", Pedido.class).setParameter(search, "%" + search + "%").getResultList();
+        return em.createQuery("SELECT e FROM Pedido e WHERE e.id = :search", Pedido.class).setParameter("search", search).getResultList();
     }
     
     public List<Pedido> orderByID() {
