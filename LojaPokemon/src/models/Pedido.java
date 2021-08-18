@@ -20,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import tools.CaixaDeFerramentas;
 
 /**
  *
@@ -114,6 +115,12 @@ public class Pedido implements Serializable {
     
     public String toCSV() {
         return id + ";" + dataPedido + ";" + cartaoID.getId() + ";" + usuarioID.getId();
+    }
+    
+    public String toFK() {
+        CaixaDeFerramentas cf = new CaixaDeFerramentas();
+        
+        return id + " - " + cf.converteDeDateParaString(dataPedido);
     }
     
 

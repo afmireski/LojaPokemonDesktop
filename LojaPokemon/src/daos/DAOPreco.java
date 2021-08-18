@@ -39,6 +39,11 @@ public class DAOPreco extends DAOGeneric<Preco> {
                 setParameter("valor", valor).getResultList();
     }
     
+    public Preco getPrecoVigenteByPokemon(Integer pokeID) {
+        return em.createQuery("SELECT e FROM Preco e WHERE e.precoPK.pokemonID = :id ORDER BY e.precoPK.dataVigencia DESC", Preco.class)
+                .setParameter("id", pokeID).getResultList().get(0);
+    }
+    
     public List<Preco> orderByDataVigencia(boolean isDesc) {
         return em.createQuery("SELECT e FROM Preco e ORDER BY e.precoPK.dataVigencia " + (isDesc ? "DESC" : "ASC"))
                 .getResultList();

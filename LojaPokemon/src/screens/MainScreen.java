@@ -103,7 +103,11 @@ public class MainScreen extends JFrame {
         }),
         createMenuItem("Pedido", (ae) -> {
             PedidoScreen pedidoScreen = new PedidoScreen();
+        }),        
+        createMenuItem("PedidoHasPokemon", (ae) -> {
+            PedidoHasPokemonScreen pedidoHasPokemonScreen = new PedidoHasPokemonScreen();
         }),
+        
     };
 
     private void createMenu() {
