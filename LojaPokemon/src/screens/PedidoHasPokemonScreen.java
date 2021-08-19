@@ -135,7 +135,7 @@ public class PedidoHasPokemonScreen extends JDialog {
     public PedidoHasPokemonScreen() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - PEDIDO HAS POKEMON");
+        setTitle("CRUD - PEDIDO HAS POKÉMON");
 
         pokemonBox = components.createComboBox(daoPokemon.getFKList());
         pedidoBox = components.createComboBox(daoPedido.getFKList());
