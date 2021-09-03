@@ -128,7 +128,7 @@ public class EnderecoScreen extends JDialog {
         "ESPÍRITO SANTO", "GOÍAS", "MARANHÃO", "MATO GROSSO", "MATO GROSSO DO SUL",
         "MINAS GERAIS", "PARÁ", "PARAÍBA", "PARANÁ", "PERNAMBUCO", "PIAUÍ", "RIO DE JANEIRO",
         "RIO GRANDE DO NORTE", "RIO GRANDE DO SUL", "RONDÔNIA", "RORAIMA", "SANTA CATARINA",
-        "SÃO PAULO", "DISTRITO FEDERAL"};
+        "SÃO PAULO", "SERGIPE", "TOCANTINS", "DISTRITO FEDERAL"};
 
     
     public EnderecoScreen() {
