@@ -38,7 +38,7 @@ import tools.DiretorioDaAplicacao;
 import tools.ImagemAjustada;
 import enums.DialogMessageType;
 import enums.DialogConfirmType;
-import helpers.PathManager;
+import helpers.webhelpers.PathManager;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
