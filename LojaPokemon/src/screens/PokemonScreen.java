@@ -632,7 +632,7 @@ public class PokemonScreen extends JDialog {
 
     private void copiaFoto(String pk) {
         final String destinoDesktop = getImage(pk);
-        final String destinoWeb = PathManager.WEB_PATH;
+        final String destinoWeb = PathManager.NONE_PATH;
 
         System.out.println(currentImage);
         System.out.println(destinoDesktop);
