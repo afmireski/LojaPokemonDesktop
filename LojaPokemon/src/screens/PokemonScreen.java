@@ -547,9 +547,9 @@ public class PokemonScreen extends JDialog {
                 if (response == JOptionPane.YES_OPTION) {
                     File img = new File(currentImage);
                     if (img.exists()) {
-                        if (!currentImage.equals(defaultImagePath)) {
-                            img.delete();
-                        }
+//                        if (!currentImage.equals(defaultImagePath)) {
+//                            img.delete();
+//                        }
                         currentImage = defaultImagePath;
                         setImage(defaultImagePath);
                         imageController = false;
