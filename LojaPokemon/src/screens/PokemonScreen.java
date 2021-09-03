@@ -256,7 +256,7 @@ public class PokemonScreen extends JDialog {
                             fkBox.setSelectedItem(pokemon.getTipoPokemonID().toFK());
                             String image;
                             if (!pokemon.getImagem().trim().isEmpty()) {
-                                image = currentPath + pokemon.getImagem();
+                                image = currentPath + "/src" + pokemon.getImagem();
                                 ImageIcon icon = imagemAjustada.getImagemAjustada(
                                         image,
                                         defaultHeight,
@@ -371,9 +371,9 @@ public class PokemonScreen extends JDialog {
                         pokemon.setTipoPokemonID(selectTipoPokemon());
                         pokemon.setDataCadastro(new Date());
                         if (actionController.equals(CrudAction.CREATE)) {
-                            pokemon.setImagem("/src/images/" + daoPokemon.autoincrement() + ".png");
+                            pokemon.setImagem("/images/" + daoPokemon.autoincrement() + ".png");
                         } else {
-                            pokemon.setImagem("/src/images/" + txtId.getText() + ".png");
+                            pokemon.setImagem("/images/" + txtId.getText() + ".png");
                         }
                         if (imageController) {
                             if (actionController.equals(CrudAction.UPDATE)) {
@@ -435,11 +435,15 @@ public class PokemonScreen extends JDialog {
 
                 if (response == JOptionPane.YES_OPTION) {
 
-                    File image = new File(currentImage.trim());
+                    File imageDesk = new File(currentImage.trim());
+                    File imageWeb = new File(PathManager.WEB_PATH + "/src/java" + pokemon.getImagem());
 
-                    if (image.exists()) {
+                    if (imageDesk.exists()) {
                         if (!currentImage.equals(defaultImagePath)) {
-                            image.delete();
+                            imageDesk.delete();
+                            if (imageWeb.exists()) {
+                                imageWeb.delete();
+                            }
                         }
                         setImage(defaultImagePath);
                     }
@@ -632,12 +636,14 @@ public class PokemonScreen extends JDialog {
 
     private void copiaFoto(String pk) {
         final String destinoDesktop = getImage(pk);
-        final String destinoWeb = PathManager.NONE_PATH;
+        final String destinoWeb = PathManager.WEB_PATH + "/src/java/images/" + pk + ".png";
 
         System.out.println(currentImage);
         System.out.println(destinoDesktop);
+        System.out.println(destinoWeb);
 
         copiarArquivos.copiar(currentImage, destinoDesktop);
+        copiarArquivos.copiar(currentImage, destinoWeb);
     }
 
     private Tipopokemon selectTipoPokemon() {
