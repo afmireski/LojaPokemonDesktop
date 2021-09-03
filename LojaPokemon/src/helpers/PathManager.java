@@ -12,5 +12,6 @@ package helpers;
 public class PathManager {
     
     final public static String NONE_PATH = "";
+    final public static String WEB_PATH = "";    
     
 }
