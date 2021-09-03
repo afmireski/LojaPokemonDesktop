@@ -38,6 +38,7 @@ import tools.DiretorioDaAplicacao;
 import tools.ImagemAjustada;
 import enums.DialogMessageType;
 import enums.DialogConfirmType;
+import helpers.PathManager;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -630,12 +631,13 @@ public class PokemonScreen extends JDialog {
     }
 
     private void copiaFoto(String pk) {
-        String destino = getImage(pk);
+        final String destinoDesktop = getImage(pk);
+        final String destinoWeb = PathManager.NONE_PATH;
 
         System.out.println(currentImage);
-        System.out.println(destino);
+        System.out.println(destinoDesktop);
 
-        copiarArquivos.copiar(currentImage, destino);
+        copiarArquivos.copiar(currentImage, destinoDesktop);
     }
 
     private Tipopokemon selectTipoPokemon() {
