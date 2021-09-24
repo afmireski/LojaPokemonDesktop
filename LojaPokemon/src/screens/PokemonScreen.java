@@ -436,7 +436,7 @@ public class PokemonScreen extends JDialog {
                 if (response == JOptionPane.YES_OPTION) {
 
                     File imageDesk = new File(currentImage.trim());
-                    File imageWeb = new File(PathManager.WEB_PATH + "/src/java" + pokemon.getImagem());
+                    File imageWeb = new File(PathManager.WEB_PATH + "/web" + pokemon.getImagem());
 
                     if (imageDesk.exists()) {
                         if (!currentImage.equals(defaultImagePath)) {
@@ -636,7 +636,7 @@ public class PokemonScreen extends JDialog {
 
     private void copiaFoto(String pk) {
         final String destinoDesktop = getImage(pk);
-        final String destinoWeb = PathManager.WEB_PATH + "/src/java/images/" + pk + ".png";
+        final String destinoWeb = PathManager.WEB_PATH + "/web/images/" + pk + ".png";
 
         System.out.println(currentImage);
         System.out.println(destinoDesktop);

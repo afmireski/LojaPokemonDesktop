@@ -131,7 +131,7 @@ public class MainScreen extends JFrame {
     private void setImage() {
         String path = dda.getDiretorioDaAplicacao() + "/src/images/loja_pokemon.png";
         System.out.println(path);
-        ImageIcon icon = imagemAjustada.getImagemAjustada(path, 500, 500);
+        ImageIcon icon = imagemAjustada.getImagemAjustada(path, 350, 350);
         img.setIcon(icon);
     }
 
