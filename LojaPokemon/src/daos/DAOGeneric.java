@@ -32,19 +32,25 @@ public class DAOGeneric<T> {
     }
 
     public T get(Long id) {
-        return (T) em.find(cls, id);
+        return refreshEntity((T) em.find(cls, id));
     }
 
     public T get(Integer id) {
-        return (T) em.find(cls, id);
+        return refreshEntity((T) em.find(cls, id));
     }
 
     public T get(String id) {
-
-        return (T) em.find(cls, id);
+        return refreshEntity((T) em.find(cls, id));
     }
 
     public List<T> list() {
         return em.createQuery("SELECT e FROM " + cls.getSimpleName() + " e").getResultList();
     }
+    
+    public T refreshEntity(T e) {
+        if (e != null) {
+            em.refresh(e);
+        }
+        return e;
+    } 
 }
