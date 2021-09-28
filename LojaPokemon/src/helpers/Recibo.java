@@ -29,12 +29,12 @@ import tools.CaixaDeFerramentas;
  *
  * @author AFMireski
  */
-public class Relatorio {
+public class Recibo {
     private static final String MSG_FALHA_GERAR_RELATORIO = "Houve uma falha ao gerar o relatório da venda do pedido %d";
     private static final String MSG_FALHA_ENVIAR_RELATORIO = "Houve uma falha ao "
             + "enviarmos o relatório da venda do pedido %d para o e-mail %s";
     
-    public static void generateRelatorioByPedido(Integer pedidoID) throws Exception {
+    public static void generateReciboByPedido(Integer pedidoID) throws Exception {
         final Font titleFont = FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD, new CMYKColor(89, 34, 0, 64));
         final Font enphasisFont = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD, new CMYKColor(89, 34, 0, 14));
         final Font defaultFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD);
@@ -55,7 +55,7 @@ public class Relatorio {
 
             PdfWriter writer = PdfWriter.getInstance(
                     document,
-                    new FileOutputStream(String.format("/src/pdfs/ReciboPedido%s", pedidoID)));
+                    new FileOutputStream(String.format("/pdfs/ReciboPedido%s", pedidoID)));
             document.open();
 
             Paragraph title = new Paragraph("Loja Pokémon", titleFont);

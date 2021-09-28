@@ -91,6 +91,7 @@ public class PedidoScreen extends JDialog {
     JButton btnRetrieve = components.buttonWithIcon("Retrieve", "/icons/retrieve.png");
     JButton btnUpdate = components.buttonWithIcon("Update", "/icons/update.png");
     JButton btnDelete = components.buttonWithIcon("Delete", "/icons/delete.png");
+    JButton btnReceipt = components.buttonWithIcon("Receipt", "/icons/receipt.png");
     JButton btnAction = new JButton("Add to List");
     JButton btnCancel = components.buttonWithIcon("Cancel", "/icons/cancel.png");
     JButton btnList = components.buttonWithIcon("List", "/icons/list.png");
@@ -150,6 +151,7 @@ public class PedidoScreen extends JDialog {
         panNorth.add(btnCreate);
         panNorth.add(btnUpdate);
         panNorth.add(btnDelete);
+        panNorth.add(btnReceipt);
         panNorth.add(btnList);
         panNorth.add(btnCancel);
         //PAN EAST CONFIGURATIONS
@@ -196,6 +198,7 @@ public class PedidoScreen extends JDialog {
                             btnUpdate.setEnabled(true);
                             btnUpdate.setVisible(true);
                             btnDelete.setEnabled(true);
+                            btnReceipt.setEnabled(true);
 
                             txtCartao.setEditable(false);
                             cartaoBox.setEnabled(false);
@@ -210,6 +213,7 @@ public class PedidoScreen extends JDialog {
                             btnCreate.setVisible(true);
                             btnUpdate.setEnabled(false);
                             btnDelete.setEnabled(false);
+                            btnReceipt.setEnabled(false);
 
                             txtCartao.setEditable(true);
                             cartaoBox.setEnabled(true);
@@ -239,7 +243,8 @@ public class PedidoScreen extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 btnRetrieve.setEnabled(false);
                 btnUpdate.setEnabled(false);
-                btnDelete.setEnabled(false);
+                btnDelete.setEnabled(false);                
+                btnReceipt.setEnabled(true);
                 btnCreate.setVisible(false);
                 btnCancel.setVisible(true);
                 btnAction.setVisible(true);
@@ -260,6 +265,7 @@ public class PedidoScreen extends JDialog {
                 btnRetrieve.setEnabled(false);
                 btnUpdate.setEnabled(false);
                 btnDelete.setEnabled(false);
+                btnReceipt.setEnabled(true);
                 btnCreate.setVisible(false);
                 btnCancel.setVisible(true);
                 btnAction.setVisible(true);
@@ -300,13 +306,7 @@ public class PedidoScreen extends JDialog {
 
                     }
 
-                    btnAction.setVisible(false);
-                    btnRetrieve.setEnabled(true);
-                    btnUpdate.setVisible(true);
-                    btnUpdate.setEnabled(false);
-                    btnCreate.setVisible(true);
-                    btnCreate.setEnabled(false);
-                    btnCancel.setVisible(false);
+                    buttonsInitialConfiguration();
                     textFieldInitialConfiguration();
 
                     txtId.setEditable(true);
@@ -339,16 +339,10 @@ public class PedidoScreen extends JDialog {
                 if (response == JOptionPane.YES_OPTION) {
                     daoPedido.delete(pedido);
                     
-                    btnRetrieve.setEnabled(false);
-                    btnUpdate.setEnabled(false);
-                    btnDelete.setEnabled(false);
-                    btnCreate.setEnabled(false);
-
                     actionController = CrudAction.DELETE;
-                    btnAction.setVisible(false);
-                    btnRetrieve.setEnabled(true);
 
                     txtId.setEditable(true);
+                    buttonsInitialConfiguration();
                     textFieldInitialConfiguration();
                     txtId.requestFocus();
 
@@ -391,6 +385,19 @@ public class PedidoScreen extends JDialog {
 
                 txtId.requestFocus();
 
+            }
+        });
+        
+        btnReceipt.addActionListener((ae) -> {
+            try {                
+                Integer id = Integer.valueOf(txtId.getText());
+                ReciboScreen reciboScreen = new ReciboScreen(id);
+            } catch (Exception e) {
+                messageDialog = new BuildMessageDialog(
+                            DialogMessageType.ERROR,
+                            "O ID do Pedido não é válido",
+                            "RECEIPT Error",
+                            container);
             }
         });
 
@@ -453,6 +460,7 @@ public class PedidoScreen extends JDialog {
         btnAction.setVisible(false);
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
+        btnReceipt.setEnabled(false);
     }
 
     private void textFieldInitialConfiguration() {	
