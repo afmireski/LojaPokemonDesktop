@@ -91,7 +91,8 @@ public class DAOPokemon extends DAOGeneric<Pokemon>{
         
         poke.forEach((p) -> {
             System.out.println(p.getId() + " - " + p.getNome() + " " + p.getTipoPokemonID().getSigla());
-        });
+            
+        });        
     }
             
             
