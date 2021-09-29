@@ -20,7 +20,21 @@ import daos.DAOPedidoHasPokemon;
 import daos.DAOPokemon;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.activation.*;
 import models.Pedido;
 import models.PedidoHasPokemon;
 import models.Pokemon;
@@ -37,8 +51,15 @@ public class Recibo {
     private static final String MSG_FALHA_GERAR_RELATORIO = "Houve uma falha ao gerar o relatório da venda do pedido %d";
     private static final String MSG_FALHA_ENVIAR_RELATORIO = "Houve uma falha ao "
             + "enviarmos o relatório da venda do pedido %d para o e-mail %s";
+    private static final String MSG_FALHA_ENCONTRAR_RELATORIO = "O arquivo ReciboPedido%d.pdf "
+            + "não foi encontrado";
 
-    public static void generateReciboByPedido(Integer pedidoID) throws Exception {
+    public static void emitirRecibo(Integer pedidoID, String remetente, char[] senhaRemetente) throws Exception {
+        generateReciboByPedido(pedidoID);
+        enviarReciboPorEmail(pedidoID, remetente, String.valueOf(senhaRemetente));
+    }
+
+    private static void generateReciboByPedido(Integer pedidoID) throws Exception {
         final Font titleFont = FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD, new CMYKColor(89, 34, 0, 64));
         final Font enphasisFont = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD, new CMYKColor(89, 34, 0, 14));
         final Font defaultFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD);
@@ -48,10 +69,14 @@ public class Recibo {
         final DAOPedido daoPedido = new DAOPedido();
         final DAOPokemon daoPokemon = new DAOPokemon();
 
+        ///BUSCA OS DADOS DO PEDIDO
+        final List<PedidoHasPokemon> phps = daoPHP.findAllPHPByPedidoID(pedidoID);
+        final Pedido pedido = daoPedido.get(pedidoID);
+
         final CaixaDeFerramentas cf = new CaixaDeFerramentas();
         final DiretorioDaAplicacao dda = new DiretorioDaAplicacao();
 
-        final String path = String.format(dda.getDiretorioDaAplicacao() + "/src/pdfs/ReciboPedido%s.pdf", pedidoID);
+        final String path = String.format(dda.getDiretorioDaAplicacao() + "/src/recibos/ReciboPedido%d.pdf", pedidoID);
 
         Document document = new Document();
 
@@ -60,10 +85,6 @@ public class Recibo {
                 new FileOutputStream(path));
 
         try {
-            ///BUSCA OS DADOS DO PEDIDO
-            final List<PedidoHasPokemon> phps = daoPHP.findAllPHPByPedidoID(pedidoID);
-            final Pedido pedido = daoPedido.get(pedidoID);
-
             document.open();
 
             Paragraph title = new Paragraph("Loja Pokémon", titleFont);
@@ -152,10 +173,69 @@ public class Recibo {
         } catch (Exception e) {
             document.close();
             writer.close();
-            
+
             File pdf = new File(path);
             pdf.delete();
             throw new Exception(String.format(MSG_FALHA_GERAR_RELATORIO, pedidoID));
         }
+    }
+
+    private static void enviarReciboPorEmail(Integer pedidoID, String remetente, String senhaRemetente) throws Exception {
+        final DAOPedido daoPedido = new DAOPedido();
+
+        ///BUSCA OS DADOS DO PEDIDO
+        final Pedido pedido = daoPedido.get(pedidoID);
+
+        final CaixaDeFerramentas cf = new CaixaDeFerramentas();
+        final DiretorioDaAplicacao dda = new DiretorioDaAplicacao();
+
+        final String path = String.format(dda.getDiretorioDaAplicacao() + "/src/recibos/ReciboPedido%d.pdf", pedidoID);
+
+        Properties props = System.getProperties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        
+
+        Session session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(remetente, senhaRemetente);
+            }
+
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(remetente));
+            message.setRecipients(
+                    Message.RecipientType.TO, InternetAddress.parse(pedido.getUsuarioID().getEmail()));
+            message.setSubject("Confirmação de pagamento Loja Pokémon");
+
+            String msg = "Olá, a sua compra foi confirmada, aqui está seu recibo";
+
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(msg, "text/html");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+
+            message.setContent(multipart);
+
+            MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+            attachmentBodyPart.attachFile(new File(path));
+            multipart.addBodyPart(attachmentBodyPart);
+
+            Transport.send(message);
+        } catch (MessagingException e) {
+            System.out.println(e.getMessage());
+            throw new Exception(String.format(
+                    MSG_FALHA_ENVIAR_RELATORIO,
+                    pedidoID, pedido.getUsuarioID().getEmail()));
+        } catch (IOException e) {
+            throw new Exception(String.format(MSG_FALHA_ENCONTRAR_RELATORIO, pedidoID));
+        }
+
     }
 }

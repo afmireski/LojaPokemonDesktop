@@ -118,7 +118,10 @@ public class ReciboScreen extends JDialog {
                 if (txtRemetente.getText().isEmpty() || txtSenha.getPassword().length == 0) {
                     throw new Exception("Preencha os campos corretamente!!!");
                 } else {
-                    Recibo.generateReciboByPedido(pedidoID);
+                    Recibo.emitirRecibo(pedidoID, txtRemetente.getText(), txtSenha.getPassword());
+                    
+                    dispose();
+                    
                     messageDialog = new BuildMessageDialog(
                             DialogMessageType.SUCESS,
                             "Recibo gerado com sucesso",
