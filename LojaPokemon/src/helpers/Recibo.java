@@ -121,12 +121,12 @@ public class Recibo {
             document.add(br2);
 
             ///CRIA TABELA PARA DETALHAR A COMPOSIÇÂO DO PEDIDO
-            PdfPTable table = new PdfPTable(2);
-            table.setWidthPercentage(60);
+            PdfPTable table = new PdfPTable(3);
+            table.setWidthPercentage(80);
             table.setSpacingBefore(10f);
             table.setSpacingBefore(10f);
 
-            float[] colWidths = {2f, 1f};
+            float[] colWidths = {2f, 1f, 2f};
             table.setWidths(colWidths);
 
             PdfPCell pokeCol = new PdfPCell(new Paragraph("Pokémon", tableColHeaderFont));
@@ -135,26 +135,35 @@ public class Recibo {
             pokeCol.setHorizontalAlignment(Element.ALIGN_CENTER);
             pokeCol.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-            PdfPCell valorCol = new PdfPCell(new Paragraph("Valor (R$)", tableColHeaderFont));
+            PdfPCell quantidadeCol = new PdfPCell(new Paragraph("Quantidade", tableColHeaderFont));
+            quantidadeCol.setBackgroundColor(new CMYKColor(89, 34, 0, 64));
+            quantidadeCol.setPaddingLeft(10);
+            quantidadeCol.setHorizontalAlignment(Element.ALIGN_CENTER);
+            quantidadeCol.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+            PdfPCell valorCol = new PdfPCell(new Paragraph("Valor Unitário (R$)", tableColHeaderFont));
             valorCol.setBackgroundColor(new CMYKColor(89, 34, 0, 64));
             valorCol.setPaddingLeft(10);
             valorCol.setHorizontalAlignment(Element.ALIGN_CENTER);
             valorCol.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
             table.addCell(pokeCol);
+            table.addCell(quantidadeCol);
             table.addCell(valorCol);
 
             double valor_total = 0.0;
             for (PedidoHasPokemon php : phps) {
                 Pokemon pokemon = daoPokemon.get(php.getPedidoHasPokemonPK().getPokemonID());
                 Preco preco = pokemon.getPrecoList().get(pokemon.getPrecoList().size() - 1);
-                valor_total += preco.getValor();
+                valor_total += preco.getValor() * php.getQuantidade();
 
                 PdfPCell pokeNome = new PdfPCell(new Paragraph(pokemon.getNome(), defaultFont));
+                PdfPCell pokeQtd = new PdfPCell(new Paragraph(String.valueOf(php.getQuantidade()), defaultFont));
                 PdfPCell pokeValor = new PdfPCell(new Paragraph(
                         String.format("%.2f", preco.getValor()), defaultFont));
 
                 table.addCell(pokeNome);
+                table.addCell(pokeQtd);
                 table.addCell(pokeValor);
             }
             table.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -196,7 +205,6 @@ public class Recibo {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
-        
 
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
