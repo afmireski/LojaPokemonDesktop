@@ -226,7 +226,6 @@ public class PedidoHasPokemonScreen extends JDialog {
                         txtPokemon.setEditable(true);
                         txtQuantidade.setEditable(true);
                         txtValorUnitario.setEditable(true);
-                        txtPokemon.setText("");
                         txtQuantidade.setText("");
                         txtValorUnitario.setText("");
                     }

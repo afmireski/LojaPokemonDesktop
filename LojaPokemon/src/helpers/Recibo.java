@@ -71,7 +71,11 @@ public class Recibo {
 
         ///BUSCA OS DADOS DO PEDIDO
         final List<PedidoHasPokemon> phps = daoPHP.findAllPHPByPedidoID(pedidoID);
-        final Pedido pedido = daoPedido.get(pedidoID);
+        
+        if (phps.isEmpty() || phps == null) {
+            throw new Exception("Não existe nenhum pokémon vinculado a esse pedido.");
+        } else {
+            final Pedido pedido = daoPedido.get(pedidoID);
 
         final CaixaDeFerramentas cf = new CaixaDeFerramentas();
         final DiretorioDaAplicacao dda = new DiretorioDaAplicacao();
@@ -187,6 +191,7 @@ public class Recibo {
             pdf.delete();
             throw new Exception(String.format(MSG_FALHA_GERAR_RELATORIO, pedidoID));
         }
+        }
     }
 
     private static void enviarReciboPorEmail(Integer pedidoID, String remetente, String senhaRemetente) throws Exception {
@@ -195,7 +200,6 @@ public class Recibo {
         ///BUSCA OS DADOS DO PEDIDO
         final Pedido pedido = daoPedido.get(pedidoID);
 
-        final CaixaDeFerramentas cf = new CaixaDeFerramentas();
         final DiretorioDaAplicacao dda = new DiretorioDaAplicacao();
 
         final String path = String.format(dda.getDiretorioDaAplicacao() + "/src/recibos/ReciboPedido%d.pdf", pedidoID);
