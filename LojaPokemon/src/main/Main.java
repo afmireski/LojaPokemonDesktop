@@ -5,10 +5,7 @@
  */
 package main;
 
-import screens.CartaoScreen;
 import screens.MainScreen;
-import screens.PessoaScreen;
-import screens.UsuarioScreen;
 
 /**
  *

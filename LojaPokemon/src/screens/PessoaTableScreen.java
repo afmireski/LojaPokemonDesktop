@@ -4,7 +4,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;

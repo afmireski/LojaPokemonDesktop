@@ -89,7 +89,7 @@ public class TipopokemonScreen extends JDialog {
 //INSTANCIA DOS LABELS
     JLabel lblId = new JLabel("ID");
     JLabel lblSigla = new JLabel("SIGLA");
-    JLabel lblDescricao = new JLabel("DESCRICAO");
+    JLabel lblDescricao = new JLabel("DESCRIÇÃO");
 
 //INSTANCIA DOS TEXTFIELD
     JTextField txtId = new JTextField(5);

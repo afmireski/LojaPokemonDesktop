@@ -4,7 +4,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -30,7 +29,7 @@ public class CartaoTableScreen extends JDialog{
     JPanel panBody = new JPanel();
 
 //TABELA
-String colunas[] = new String[]{"ID", "SALDO", "NOME", "DATACADASTRO", "USUARIOID"};
+String colunas[] = new String[]{"ID", "SALDO", "NOME", "DATA CADASTRO", "USUÁRIO ID"};
 String linhas[][] = new String[0][colunas.length];
 
 DefaultTableModel tableModel = new DefaultTableModel(linhas, colunas);
@@ -47,7 +46,7 @@ this.cartaos = cartaos;
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - CARTAO");
+        setTitle("CRUD - CARTÃO");
 
 
 	//CONTAINER CONFIGURATIONS
@@ -62,7 +61,7 @@ this.cartaos = cartaos;
 
 panBody.setLayout(new GridLayout(1, 1));
 //TABELA
-String colunas[] = new String[]{"ID", "SALDO", "NOME", "DATACADASTRO", "USUARIOID"};
+String colunas[] = new String[]{"ID", "SALDO", "NOME", "DATA CADASTRO", "USUÁRIO ID"};
 Object dados[][] = new Object[this.cartaos.size()][colunas.length];
 
 String aux[];

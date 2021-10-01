@@ -103,7 +103,7 @@ public class CartaoScreen extends JDialog {
     JLabel lblId = new JLabel("ID");
     JLabel lblSaldo = new JLabel("SALDO");
     JLabel lblNome = new JLabel("NOME");  
-    JLabel lblUsuarioID = new JLabel("USUARIO ID");
+    JLabel lblUsuarioID = new JLabel("USUÁRIO ID");
 
 //INSTANCIA DOS TEXTFIELD
     JTextField txtId = new JTextField(10);
@@ -121,7 +121,7 @@ public class CartaoScreen extends JDialog {
     public CartaoScreen() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - CARTAO");
+        setTitle("CRUD - CARTÃO");
     
         usuarioBox = components.createComboBox(daoUsuario.getFKList());
         

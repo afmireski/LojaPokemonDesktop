@@ -103,8 +103,8 @@ public class PrecoScreen extends JDialog {
     DAOPokemon daoPokemon = new DAOPokemon();
 
 //INSTANCIA DOS LABELS
-    JLabel lblPokemonID = new JLabel("POKEMON");
-    JLabel lblDataVigencia = new JLabel("DATA VIGENCIA");
+    JLabel lblPokemonID = new JLabel("POKÉMON");
+    JLabel lblDataVigencia = new JLabel("DATA VIGÊNCIA");
     JLabel lblValor = new JLabel("VALOR");
 
 //INSTANCIA DOS TEXTFIELD

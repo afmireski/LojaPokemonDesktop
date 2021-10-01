@@ -23,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import tools.CaixaDeFerramentas;
 
 /**
  *
@@ -163,8 +164,9 @@ public class Usuario implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return id + ";" + email + ";" + senha + ";" + dataCriacao + ";" + ativo + ";" + pessoaCPF.getCpf();
+    public String toString() {        
+        final CaixaDeFerramentas cf = new CaixaDeFerramentas();
+        return id + ";" + email + ";" + senha + ";" + cf.converteDeDateParaString(dataCriacao) + ";" + ativo + ";" + pessoaCPF.getCpf();
     }
 
 }

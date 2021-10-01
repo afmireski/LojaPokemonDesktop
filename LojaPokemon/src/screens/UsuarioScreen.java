@@ -4,10 +4,6 @@ import daos.DAOPessoa;
 import daos.DAOUsuario;
 import functions.ConvertToEnum;
 import functions.ConvertFromEnum;
-import java.util.ArrayList;
-import java.util.List;
-import tools.CaixaDeFerramentas;
-import tools.ManipulaArquivo;
 import functions.VerifyPK;
 import helpers.BuildConfirmDialog;
 import helpers.BuildMessageDialog;
@@ -16,7 +12,6 @@ import helpers.GenericComponents;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -27,12 +22,10 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import tools.CaixaDeFerramentas;
@@ -132,7 +125,7 @@ public class UsuarioScreen extends JDialog {
     public UsuarioScreen() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - USUARIO");
+        setTitle("CRUD - USUÁRIO");
 
         pessoaBox = components.createComboBox(daoPessoa.getFKList());
 

@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -31,7 +30,7 @@ public class EnderecoTableScreen extends JDialog {
     JPanel panBody = new JPanel();
 
 //TABELA
-    String colunas[] = new String[]{"CEP", "NCASA", "NOME", "CIDADE", "UF", "UFDESCRICAO"};
+    String colunas[] = new String[]{"CEP", "Nº CASA", "NOME", "CIDADE", "UF", "UF DESCRIÇÃO"};
     String linhas[][] = new String[0][colunas.length];
 
     DefaultTableModel tableModel = new DefaultTableModel(linhas, colunas);
@@ -47,7 +46,7 @@ public class EnderecoTableScreen extends JDialog {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - ENDERECO");
+        setTitle("CRUD - ENDEREÇO");
 
         //CONTAINER CONFIGURATIONS
         container = getContentPane();
@@ -60,7 +59,7 @@ public class EnderecoTableScreen extends JDialog {
 
         panBody.setLayout(new GridLayout(1, 1));
 //TABELA
-        String colunas[] = new String[]{"CEP", "NCASA", "NOME", "CIDADE", "UF", "UFDESCRICAO"};
+        String colunas[] = new String[]{"CEP", "NºCASA", "NOME", "CIDADE", "UF", "UF DESCRIÇÃO"};
         Object dados[][] = new Object[this.enderecos.size()][colunas.length];
 
         String aux[];

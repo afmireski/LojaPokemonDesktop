@@ -4,7 +4,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -30,7 +29,7 @@ public class PokemonTableScreen extends JDialog{
     JPanel panBody = new JPanel();
 
 //TABELA
-String colunas[] = new String[]{"ID", "NOME", "ESTOQUE", "TIPOPOKEMONID", "IMAGE"};
+String colunas[] = new String[]{"ID", "NOME", "ESTOQUE", "TIPO POKÉMON ID", "IMAGE"};
 String linhas[][] = new String[0][colunas.length];
 
 DefaultTableModel tableModel = new DefaultTableModel(linhas, colunas);
@@ -47,7 +46,7 @@ this.pokemons = pokemons;
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - POKEMON");
+        setTitle("CRUD - POKÉMON");
 
 
 	//CONTAINER CONFIGURATIONS

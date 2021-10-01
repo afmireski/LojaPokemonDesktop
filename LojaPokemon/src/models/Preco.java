@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import tools.CaixaDeFerramentas;
 
 /**
  *
@@ -98,7 +99,8 @@ public class Preco implements Serializable {
     }
     
     public String toCSV() {
-        return this.precoPK.getDataVigencia() + ";" + this.precoPK.getPokemonID() + ";" + this.valor;
+        final CaixaDeFerramentas cf = new CaixaDeFerramentas();
+        return cf.converteDeDateParaString(this.precoPK.getDataVigencia()) + ";" + this.precoPK.getPokemonID() + ";" + this.valor;
     }
 
     @Override

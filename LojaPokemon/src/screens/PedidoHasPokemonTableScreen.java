@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -31,7 +30,7 @@ public class PedidoHasPokemonTableScreen extends JDialog {
     JPanel panBody = new JPanel();
 
 //TABELA
-    String colunas[] = new String[]{"PEDIDO", "POKEMON", "QUANTIDADE", "VALOR UNITÁRIO"};
+    String colunas[] = new String[]{"PEDIDO", "POKÉMON", "QUANTIDADE", "VALOR UNITÁRIO"};
     String linhas[][] = new String[0][colunas.length];
 
     DefaultTableModel tableModel = new DefaultTableModel(linhas, colunas);
@@ -60,7 +59,7 @@ public class PedidoHasPokemonTableScreen extends JDialog {
 
         panBody.setLayout(new GridLayout(1, 1));
 //TABELA
-        String colunas[] = new String[]{"PEDIDO", "POKEMON", "QUANTIDADE", "VALORUNITARIO"};
+        String colunas[] = new String[]{"PEDIDO", "POKÉMON", "QUANTIDADE", "VALOR UNITÁRIO"};
         Object dados[][] = new Object[this.pedidoHasPokemons.size()][colunas.length];
 
         String aux[];

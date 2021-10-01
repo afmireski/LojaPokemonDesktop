@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import tools.CaixaDeFerramentas;
 
 /**
  *
@@ -156,7 +157,8 @@ public class Pessoa implements Serializable {
 
     @Override
     public String toString() {
-        return cpf + ";" + nome + ";" + dataNascimento + ";" + sexo + ";" + sexoDescricao + ";" 
+        final CaixaDeFerramentas cf = new CaixaDeFerramentas();
+        return cpf + ";" + nome + ";" + cf.converteDeDateParaString(dataNascimento) + ";" + sexo + ";" + sexoDescricao + ";" 
                 + endereco.getEnderecoPK().getCep() + ";" + endereco.getEnderecoPK().getNCasa(); 
     }
     

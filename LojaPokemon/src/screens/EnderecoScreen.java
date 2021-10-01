@@ -30,7 +30,6 @@ import tools.CaixaDeFerramentas;
 import tools.Tools;
 import enums.DialogMessageType;
 import enums.DialogConfirmType;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import javax.swing.JComboBox;
 import models.Endereco;
@@ -107,7 +106,7 @@ public class EnderecoScreen extends JDialog {
     JLabel lblNome = new JLabel("NOME");
     JLabel lblCidade = new JLabel("CIDADE");
     JLabel lblUf = new JLabel("UF");
-    JLabel lblUfDescricao = new JLabel("UFDESCRICAO");
+    JLabel lblUfDescricao = new JLabel("UF DESCRIÇÂO");
 
 //INSTANCIA DOS TEXTFIELD
     JTextField txtCep = new JTextField(9);

@@ -111,7 +111,7 @@ public class PedidoHasPokemonScreen extends JDialog {
 
 //INSTANCIA DOS LABELS
     JLabel lblPedido = new JLabel("PEDIDO");
-    JLabel lblPokemon = new JLabel("POKEMON");
+    JLabel lblPokemon = new JLabel("POKÉMON");
     JLabel lblQuantidade = new JLabel("QUANTIDADE");
     JLabel lblValorUnitario = new JLabel("VALOR UNITÁRIO");
 

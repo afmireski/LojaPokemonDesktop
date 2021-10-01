@@ -4,7 +4,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -30,7 +29,7 @@ public class NovidadesTableScreen extends JDialog{
     JPanel panBody = new JPanel();
 
 //TABELA
-String colunas[] = new String[]{"ID", "TITULO", "DESCRICAO"};
+String colunas[] = new String[]{"ID", "TÍTULO", "DESCRIÇÃO"};
 String linhas[][] = new String[0][colunas.length];
 
 DefaultTableModel tableModel = new DefaultTableModel(linhas, colunas);
@@ -62,7 +61,7 @@ this.novidadess = novidadess;
 
 panBody.setLayout(new GridLayout(1, 1));
 //TABELA
-String colunas[] = new String[]{"ID", "TITULO", "DESCRICAO"};
+String colunas[] = new String[]{"ID", "TÍTULO", "DESCRIÇÃO"};
 Object dados[][] = new Object[this.novidadess.size()][colunas.length];
 
 String aux[];

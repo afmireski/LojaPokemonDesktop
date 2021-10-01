@@ -3,10 +3,6 @@ package screens;
 import daos.DAONovidades;
 import functions.ConvertToEnum;
 import functions.ConvertFromEnum;
-import java.util.ArrayList;
-import java.util.List;
-import tools.CaixaDeFerramentas;
-import tools.ManipulaArquivo;
 import functions.VerifyPK;
 import helpers.BuildConfirmDialog;
 import helpers.BuildMessageDialog;
@@ -15,23 +11,19 @@ import helpers.GenericComponents;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import tools.CaixaDeFerramentas;
@@ -96,8 +88,8 @@ public class NovidadesScreen extends JDialog {
 
 //INSTANCIA DOS LABELS
     JLabel lblId = new JLabel("ID");
-    JLabel lblTitulo = new JLabel("TITULO");
-    JLabel lblDescricao = new JLabel("DESCRICAO");
+    JLabel lblTitulo = new JLabel("TÍTULO");
+    JLabel lblDescricao = new JLabel("DESCRIÇÃO");
 
 //INSTANCIA DOS TEXTFIELD
     JTextField txtId = new JTextField(5);

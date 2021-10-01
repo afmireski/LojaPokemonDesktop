@@ -107,7 +107,7 @@ public class PessoaScreen extends JDialog {
     JLabel lblDataNascimento = new JLabel("DATA DE NASCIMENTO");
     JLabel lblNome = new JLabel("NOME");
     JLabel lblSexo = new JLabel("SEXO");
-    JLabel lblEndereco = new JLabel("ENDERECO");
+    JLabel lblEndereco = new JLabel("ENDEREÇO");
 
 //INSTANCIA DOS TEXTFIELD
     JTextField txtCpf = new JTextField(12);

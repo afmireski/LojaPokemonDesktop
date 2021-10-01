@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -31,7 +30,7 @@ public class PrecoTableScreen extends JDialog {
     JPanel panBody = new JPanel();
 
 //TABELA
-    String colunas[] = new String[]{"POKEMONID", "DATAVIGENCIA", "VALOR"};
+    String colunas[] = new String[]{"POKÉMON ID", "DATA VIGÊNCIA", "VALOR"};
     String linhas[][] = new String[0][colunas.length];
 
     DefaultTableModel tableModel = new DefaultTableModel(linhas, colunas);
@@ -47,7 +46,7 @@ public class PrecoTableScreen extends JDialog {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - PRECO");
+        setTitle("CRUD - PREÇO");
 
         //CONTAINER CONFIGURATIONS
         container = getContentPane();

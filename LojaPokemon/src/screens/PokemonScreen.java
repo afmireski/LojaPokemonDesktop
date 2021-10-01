@@ -151,7 +151,7 @@ public class PokemonScreen extends JDialog {
     public PokemonScreen() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("CRUD - POKEMON");
+        setTitle("CRUD - POKÉMON");
 
         //IMAGE INITIAl CONFIGURATIONS
         setImage(defaultImagePath);

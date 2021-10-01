@@ -114,7 +114,8 @@ public class Pedido implements Serializable {
     }
     
     public String toCSV() {
-        return id + ";" + dataPedido + ";" + cartaoID.getId() + ";" + usuarioID.getId();
+        final CaixaDeFerramentas cf = new CaixaDeFerramentas();
+        return id + ";" + cf.converteDeDateParaString(dataPedido) + ";" + cartaoID.getId() + ";" + usuarioID.getId();
     }
     
     public String toFK() {

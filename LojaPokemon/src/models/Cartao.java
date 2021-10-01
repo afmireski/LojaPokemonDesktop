@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import tools.CaixaDeFerramentas;
 
 /**
  *
@@ -141,7 +142,8 @@ public class Cartao implements Serializable {
 
     @Override
     public String toString() {
-        return id + ";" + saldo + ";" + nome + ";" + dataCadastro + ";" + usuarioID.getId();
+        CaixaDeFerramentas cf = new CaixaDeFerramentas();
+        return id + ";" + saldo + ";" + nome + ";" + cf.converteDeDateParaString(dataCadastro) + ";" + usuarioID.getId();
     }
 
 }

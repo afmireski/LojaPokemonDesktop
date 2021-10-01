@@ -60,7 +60,7 @@ public class TipopokemonTableScreen extends JDialog {
 
         panBody.setLayout(new GridLayout(1, 1));
         //TABELA
-        String colunas[] = new String[]{"ID", "SIGLA", "DESCRICAO"};
+        String colunas[] = new String[]{"ID", "SIGLA", "DESCRIÇÃO"};
         Object dados[][] = new Object[this.tipopokemons.size()][colunas.length];
 
         String aux[];
