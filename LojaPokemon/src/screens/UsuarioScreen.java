@@ -90,7 +90,7 @@ public class UsuarioScreen extends JDialog {
     JButton btnRetrieve = components.buttonWithIcon("Retrieve", "/icons/retrieve.png");
     JButton btnUpdate = components.buttonWithIcon("Update", "/icons/update.png");
     JButton btnDelete = components.buttonWithIcon("Delete", "/icons/delete.png");
-    JButton btnAction = new JButton("Add to List");
+    JButton btnSave = components.buttonWithIcon("Save", "/icons/save.png");
     JButton btnCancel = components.buttonWithIcon("Cancel", "/icons/cancel.png");
     JButton btnList = components.buttonWithIcon("List", "/icons/list.png");
 
@@ -191,7 +191,7 @@ public class UsuarioScreen extends JDialog {
         panL4C2.add(txtSenha);
 
         //Prenchimento Linha 5
-        panL5C2.add(btnAction);
+        panL5C2.add(btnSave);
         //BTN RETRIEVE ACTION LISTENER
         btnRetrieve.addActionListener(new ActionListener() {
             @Override
@@ -255,14 +255,12 @@ public class UsuarioScreen extends JDialog {
                 btnDelete.setEnabled(false);
                 btnCreate.setVisible(false);
                 btnCancel.setVisible(true);
-                btnAction.setVisible(true);
+                btnSave.setVisible(true);
 
                 txtId.setEditable(false);
                 txtEmail.requestFocus();
 
                 actionController = "CREATE";
-
-                btnAction.setText("Adicionar à Lista");
             }
         });
 
@@ -275,7 +273,7 @@ public class UsuarioScreen extends JDialog {
                 btnDelete.setEnabled(false);
                 btnCreate.setVisible(false);
                 btnCancel.setVisible(true);
-                btnAction.setVisible(true);
+                btnSave.setVisible(true);
 
                 txtId.setEditable(false);
                 txtEmail.setEditable(true);
@@ -286,13 +284,11 @@ public class UsuarioScreen extends JDialog {
                 txtEmail.requestFocus();
 
                 actionController = "UPDATE";
-
-                btnAction.setText("Atualizar na Lista");
             }
         });
 
         //BTN ACTION ACTION LISTENER
-        btnAction.addActionListener(new ActionListener() {
+        btnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -321,7 +317,7 @@ public class UsuarioScreen extends JDialog {
 
                     }
 
-                    btnAction.setVisible(false);
+                    btnSave.setVisible(false);
                     btnRetrieve.setEnabled(true);
                     btnUpdate.setVisible(true);
                     btnUpdate.setEnabled(false);
@@ -364,7 +360,7 @@ public class UsuarioScreen extends JDialog {
                     btnCreate.setEnabled(false);
 
                     actionController = "DELETE";
-                    btnAction.setVisible(false);
+                    btnSave.setVisible(false);
                     btnRetrieve.setEnabled(true);
 
                     txtId.setEditable(true);
@@ -452,7 +448,7 @@ public class UsuarioScreen extends JDialog {
         btnCancel.setVisible(false);
         btnList.setVisible(true);
         btnCreate.setEnabled(false);
-        btnAction.setVisible(false);
+        btnSave.setVisible(false);
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
     }

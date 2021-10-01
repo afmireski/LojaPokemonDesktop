@@ -92,7 +92,7 @@ public class PessoaScreen extends JDialog {
     JButton btnRetrieve = components.buttonWithIcon("Retrieve", "/icons/retrieve.png");
     JButton btnUpdate = components.buttonWithIcon("Update", "/icons/update.png");
     JButton btnDelete = components.buttonWithIcon("Delete", "/icons/delete.png");
-    JButton btnAction = new JButton("Add to List");
+    JButton btnSave = components.buttonWithIcon("Save", "/icons/save.png");
     JButton btnCancel = components.buttonWithIcon("Cancel", "/icons/cancel.png");
     JButton btnList = components.buttonWithIcon("List", "/icons/list.png");
 
@@ -200,7 +200,7 @@ public class PessoaScreen extends JDialog {
         panL4C2.add(txtDataNascimento);
         
         //Prenchimento Linha 5
-        panL5C2.add(btnAction);
+        panL5C2.add(btnSave);
         
         //BTN RETRIEVE ACTION LISTENER
         btnRetrieve.addActionListener(new ActionListener() {
@@ -265,14 +265,12 @@ public class PessoaScreen extends JDialog {
                 btnDelete.setEnabled(false);
                 btnCreate.setVisible(false);
                 btnCancel.setVisible(true);
-                btnAction.setVisible(true);
+                btnSave.setVisible(true);
                 txtDataNascimento.setEditable(true);
                 txtCpf.setEditable(false);
                 txtNome.requestFocus();
 
                 actionController = "CREATE";
-
-                btnAction.setText("Adicionar à Lista");
             }
         });
 
@@ -285,7 +283,7 @@ public class PessoaScreen extends JDialog {
                 btnDelete.setEnabled(false);
                 btnCreate.setVisible(false);
                 btnCancel.setVisible(true);
-                btnAction.setVisible(true);
+                btnSave.setVisible(true);
 
                 txtCpf.setEditable(false);
                 txtNome.setEditable(true);
@@ -297,13 +295,11 @@ public class PessoaScreen extends JDialog {
                 txtNome.requestFocus();
 
                 actionController = "UPDATE";
-
-                btnAction.setText("Atualizar na Lista");
             }
         });
 
         //BTN ACTION ACTION LISTENER
-        btnAction.addActionListener(new ActionListener() {
+        btnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -332,7 +328,7 @@ public class PessoaScreen extends JDialog {
 
                     }
 
-                    btnAction.setVisible(false);
+                    btnSave.setVisible(false);
                     btnRetrieve.setEnabled(true);
                     btnUpdate.setVisible(true);
                     btnUpdate.setEnabled(false);
@@ -376,7 +372,7 @@ public class PessoaScreen extends JDialog {
                     btnCreate.setEnabled(false);
 
                     actionController = "DELETE";
-                    btnAction.setVisible(false);
+                    btnSave.setVisible(false);
                     btnRetrieve.setEnabled(true);
                     
                     textFieldInitialConfiguration();                    
@@ -464,7 +460,7 @@ public class PessoaScreen extends JDialog {
         btnCancel.setVisible(false);
         btnList.setVisible(true);
         btnCreate.setEnabled(false);
-        btnAction.setVisible(false);
+        btnSave.setVisible(false);
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
     }

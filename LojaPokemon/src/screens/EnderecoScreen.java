@@ -91,7 +91,7 @@ public class EnderecoScreen extends JDialog {
     JButton btnRetrieve = components.buttonWithIcon("Retrieve", "/icons/retrieve.png");
     JButton btnUpdate = components.buttonWithIcon("Update", "/icons/update.png");
     JButton btnDelete = components.buttonWithIcon("Delete", "/icons/delete.png");
-    JButton btnAction = new JButton("Add to List");
+    JButton btnSave = components.buttonWithIcon("Save", "/icons/save.png");
     JButton btnCancel = components.buttonWithIcon("Cancel", "/icons/cancel.png");
     JButton btnList = components.buttonWithIcon("List", "/icons/list.png");
 
@@ -202,7 +202,7 @@ public class EnderecoScreen extends JDialog {
         panL4C2.add(txtUf);
 
         //Prenchimento Linha 6
-        panL6C2.add(btnAction);
+        panL6C2.add(btnSave);
         //BTN RETRIEVE ACTION LISTENER
         btnRetrieve.addActionListener(new ActionListener() {
             @Override
@@ -264,15 +264,13 @@ public class EnderecoScreen extends JDialog {
                 btnDelete.setEnabled(false);
                 btnCreate.setVisible(false);
                 btnCancel.setVisible(true);
-                btnAction.setVisible(true);
+                btnSave.setVisible(true);
 
                 txtCep.setEditable(false);
                 txtNCasa.setEditable(false);
                 txtNome.requestFocus();
 
                 actionController = "CREATE";
-
-                btnAction.setText("Adicionar à Lista");
             }
         });
 
@@ -285,7 +283,7 @@ public class EnderecoScreen extends JDialog {
                 btnDelete.setEnabled(false);
                 btnCreate.setVisible(false);
                 btnCancel.setVisible(true);
-                btnAction.setVisible(true);
+                btnSave.setVisible(true);
 
                 txtCep.setEditable(false);
                 txtNCasa.setEditable(false);
@@ -295,13 +293,11 @@ public class EnderecoScreen extends JDialog {
                 txtNome.requestFocus();
 
                 actionController = "UPDATE";
-
-                btnAction.setText("Atualizar na Lista");
             }
         });
 
         //BTN ACTION ACTION LISTENER
-        btnAction.addActionListener(new ActionListener() {
+        btnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -332,7 +328,7 @@ public class EnderecoScreen extends JDialog {
 
                     }
 
-                    btnAction.setVisible(false);
+                    btnSave.setVisible(false);
                     btnRetrieve.setEnabled(true);
                     btnUpdate.setVisible(true);
                     btnUpdate.setEnabled(false);
@@ -377,7 +373,7 @@ public class EnderecoScreen extends JDialog {
                     btnCreate.setEnabled(false);
 
                     actionController = "DELETE";
-                    btnAction.setVisible(false);
+                    btnSave.setVisible(false);
                     btnRetrieve.setEnabled(true);
 
                     textFieldInitialConfiguration();
@@ -454,7 +450,7 @@ public class EnderecoScreen extends JDialog {
         btnCancel.setVisible(false);
         btnList.setVisible(true);
         btnCreate.setEnabled(false);
-        btnAction.setVisible(false);
+        btnSave.setVisible(false);
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
     }

@@ -97,7 +97,7 @@ public class PedidoHasPokemonScreen extends JDialog {
     JButton btnRetrieve = components.buttonWithIcon("Retrieve", "/icons/retrieve.png");
     JButton btnUpdate = components.buttonWithIcon("Update", "/icons/update.png");
     JButton btnDelete = components.buttonWithIcon("Delete", "/icons/delete.png");
-    JButton btnAction = new JButton("Add to List");
+    JButton btnSave = components.buttonWithIcon("Save", "/icons/save.png");
     JButton btnCancel = components.buttonWithIcon("Cancel", "/icons/cancel.png");
     JButton btnList = components.buttonWithIcon("List", "/icons/list.png");
 
@@ -197,7 +197,7 @@ public class PedidoHasPokemonScreen extends JDialog {
         panL2C2.add(txtQuantidade);
 
         //Prenchimento Linha 4
-        panL4C2.add(btnAction);
+        panL4C2.add(btnSave);
         //BTN RETRIEVE ACTION LISTENER
         btnRetrieve.addActionListener(new ActionListener() {
             @Override
@@ -249,7 +249,7 @@ public class PedidoHasPokemonScreen extends JDialog {
                 btnDelete.setEnabled(false);
                 btnCreate.setVisible(false);
                 btnCancel.setVisible(true);
-                btnAction.setVisible(true);
+                btnSave.setVisible(true);
 
                 txtPedido.setEditable(false);
                 pedidoBox.setEnabled(false);
@@ -260,8 +260,6 @@ public class PedidoHasPokemonScreen extends JDialog {
                 txtQuantidade.requestFocus();
 
                 actionController = CrudAction.CREATE;
-
-                btnAction.setText("Adicionar à Lista");
             }
         });
 
@@ -274,7 +272,7 @@ public class PedidoHasPokemonScreen extends JDialog {
                 btnDelete.setEnabled(false);
                 btnCreate.setVisible(false);
                 btnCancel.setVisible(true);
-                btnAction.setVisible(true);
+                btnSave.setVisible(true);
 
                 txtPedido.setEditable(false);
                 pedidoBox.setEnabled(false);
@@ -287,13 +285,11 @@ public class PedidoHasPokemonScreen extends JDialog {
                 txtQuantidade.requestFocus();
 
                 actionController = CrudAction.UPDATE;
-
-                btnAction.setText("Atualizar na Lista");
             }
         });
 
         //BTN ACTION ACTION LISTENER
-        btnAction.addActionListener(new ActionListener() {
+        btnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -320,7 +316,7 @@ public class PedidoHasPokemonScreen extends JDialog {
 
                     }
 
-                    btnAction.setVisible(false);
+                    btnSave.setVisible(false);
                     btnRetrieve.setEnabled(true);
                     btnUpdate.setVisible(true);
                     btnUpdate.setEnabled(false);
@@ -365,7 +361,7 @@ public class PedidoHasPokemonScreen extends JDialog {
                     btnCreate.setEnabled(false);
 
                     actionController = CrudAction.DELETE;
-                    btnAction.setVisible(false);
+                    btnSave.setVisible(false);
                     btnRetrieve.setEnabled(true);
 
                     txtPedido.setEditable(true);
@@ -468,7 +464,7 @@ public class PedidoHasPokemonScreen extends JDialog {
         btnCancel.setVisible(false);
         btnList.setVisible(true);
         btnCreate.setEnabled(false);
-        btnAction.setVisible(false);
+        btnSave.setVisible(false);
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
     }
